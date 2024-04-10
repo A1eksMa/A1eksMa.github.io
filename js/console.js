@@ -12,7 +12,17 @@ var aText = new Array(
 "> Currently, I'm full-time employed, but I'm open for a collaborating in a free time.",
 "> My interests includes web performance (backend), databases and data analysis.",
 "> Now I'm focused on improving my code quality.",
-"> I am open to considering both commercial and open-source projects."
+"> I am open to considering both commercial and open-source projects.",
+"> ",
+"> python3",
+">>> print('\n'.join(' '.join(*zip(*row)) for row in ([["*" if row==0 and col%3!=0 or row==1 and col%3==0 or row-col==2 or row+col==8 else " " for col in range(7)] for row in range(6)])))",
+">>>   * *   * *  ",
+">>> *     *     *",
+">>> *           *",
+">>>   *       *  ",
+">>>     *   *    ",
+">>>       *   ",
+""
 );
 var iSpeed = 10; // time delay of print out
 var iIndex = 0; // start printing array at this posision
