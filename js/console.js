@@ -1,4 +1,4 @@
-var birthday = new Date('December 16, 1997 00:00:00')
+var birthday = new Date('August 20, 1981 00:00:00')
 var ageDifMs = Date.now() - birthday.getTime();
 var ageDate = new Date(ageDifMs); // miliseconds from epoch
 var age = Math.abs(ageDate.getUTCFullYear() - 1970).toString();
@@ -7,11 +7,12 @@ var filled = false;
 
 // set up text to print, each item in array is new line
 var aText = new Array(
-"> Hello!", 
-"> My name is Ariel, I am " + age + " years old.", 
-"> I love programming and challenges.",
-"> I currently work as an Senior Android Platform Engineer at Volvo Construction Equipment.",
-"> If you want to know more about me, you are in the right place :)"
+"> Hello, World! My name is Alex.", 
+"> I'm a logistical engineer and enthusiastic programmer in my daily life.", 
+"> Currently, I'm fulltime employed, but I'm open for a collaborating in a free time.",
+"> My interests includes web performance (backend), databases and data analysis.",
+"> Now I'm focused on improving my code quality.",
+"> I am open to considering both commercial and open-source projects."
 );
 var iSpeed = 10; // time delay of print out
 var iIndex = 0; // start printing array at this posision
