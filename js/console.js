@@ -15,7 +15,7 @@ var aText = new Array(
 "> I am open to considering both commercial and open-source projects.",
 "> ",
 "> python3",
-">>> print(\n.join( .join(*zip(*row)) for row in ([[* if row==0 and col%3!=0 or row==1 and col%3==0 or row-col==2 or row+col==8 else   for col in range(7)] for row in range(6)])))",
+">>> print(\'\n\'.join(\' \'.join(*zip(*row)) for row in ([[\'*\' if row==0 and col%3!=0 or row==1 and col%3==0 or row-col==2 or row+col==8 else \' \' for col in range(7)] for row in range(6)])))",
 ">>> ________* *___* *________",
 ">>> ______*_____*_____*______",
 ">>> ______*___________*______",
