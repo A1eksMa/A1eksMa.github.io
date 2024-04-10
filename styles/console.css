@@ -62,12 +62,12 @@
 
 @media only screen and (min-width: 1920px) {
   .console_img {
-    max-width: 60%;
+    max-width: 80%;
   }
   .typedtextclass {
     font-size: 1vw;
-    left: 21%;
-    max-width: 58%;
+    left: 11%;
+    max-width: 78%;
     line-height: 160%;
   }
 }
