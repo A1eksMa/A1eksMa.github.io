@@ -21,8 +21,7 @@ var aText = new Array(
 ">>> ______*___________*______",
 ">>> ________*_______*________",
 ">>> __________*___*__________",
-">>> ____________*____________",
-""
+">>> ____________*____________"
 );
 var iSpeed = 10; // time delay of print out
 var iIndex = 0; // start printing array at this posision
