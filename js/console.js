@@ -9,7 +9,7 @@ var filled = false;
 var aText = new Array(
 '> Hello, World! My name is Alex.', 
 '> I\'m a logistical engineer and enthusiastic programmer in my daily life.', 
-//'> Currently, I\'m full-time employed, but I\'m open for a collaborating in a free time.',
+'> Currently, I\'m full-time employed, but I\'m open for a collaborating in a free time.',
 //'> My interests includes web performance (backend), databases and data analysis.',
 //'> Now I\'m focused on improving my code quality and seeking the Zen of Python.',
 //'> I am open to considering both commercial and open-source projects.',
