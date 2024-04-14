@@ -5,11 +5,6 @@
         "logo": "assets/projects/portfolio.png"
     },
     {
-        "repo": "data-analysts.ru",
-        "title": "My educational projects",
-        "logo": "assets/projects/portfolio.png"
-    },
-    {
         "repo": "blind_typing_practice",
         "title": "Blind Byping Practice",
         "logo": "assets/projects/shell.png"
