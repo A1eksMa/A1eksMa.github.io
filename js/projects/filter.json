@@ -5,13 +5,18 @@
         "logo": "assets/projects/portfolio.png"
     },
     {
+        "repo": "data-analysts.ru",
+        "title": "www.data-analysts.ru",
+        "logo": "assets/projects/data-analysts.ru.png"
+    },
+    {
         "repo": "blind_typing_practice",
         "title": "Blind Byping Practice",
         "logo": "assets/projects/shell.png"
     },
     {
         "repo": "excell_functions",
-        "title": "Python libs",
+        "title": "excell_functions (python library)",
         "logo": "assets/projects/python.png"
     }
 ]
