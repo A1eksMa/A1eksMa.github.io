@@ -11,6 +11,12 @@ description: "Alex Ma — Data Engineer / Analyst"
 **Город:** Омск
 **Статус:** Открыт к предложениям
 
+<div style="margin: 1.5rem 0;">
+  <button id="about-toggle-btn" onclick="toggleAbout()" style="padding: 0.35rem 1.1rem; cursor: pointer; border-radius: 4px; border: 1px solid currentColor; background: transparent; font-size: 0.9rem; font-family: inherit;">
+    Подробнее ↓
+  </button>
+</div>
+
 ---
 
 ## Образование
@@ -18,39 +24,37 @@ description: "Alex Ma — Data Engineer / Analyst"
 **Омский государственный университет имени Ф.М. Достоевского**
 Экономический факультет · Экономическая теория · 2003
 
-**Омский государственный технический университет**
-Факультет транспорта, нефти и газа · Проектирование, сооружение и эксплуатация газонефтепроводов и газонефтехранилищ · 2016
+<div class="about-full" style="display:none">
+<p><strong>Омский государственный технический университет</strong><br>
+Факультет транспорта, нефти и газа · Проектирование, сооружение и эксплуатация газонефтепроводов и газонефтехранилищ · 2016</p>
+</div>
 
----
+<div class="about-full" style="display:none">
+<hr>
+<h2>Дополнительное образование</h2>
+<p><strong>Data Analyst</strong> · 2022–2023</p>
+<p><strong>Data Driven</strong> · 2025</p>
+</div>
 
-## Дополнительное образование
+<div class="about-full" style="display:none">
+<hr>
+<h2>Системы контроля версий</h2>
+<p><strong>GitHub</strong> · <a href="https://github.com/A1eksMa">A1eksMa</a><br>
+Международная платформа. Код, проекты с открытым исходным кодом, портфолио.</p>
+<p><strong>GitVerse</strong> · <a href="https://gitverse.ru/a1ex_ma">a1ex_ma</a><br>
+Российская платформа контроля версий. Проекты для русскоязычного сообщества.</p>
+</div>
 
-**Data Analyst** · 2022–2023
-
-**Data Driven** · 2025
-
----
-
-## Системы контроля версий
-
-**GitHub** · [A1eksMa](https://github.com/A1eksMa)
-Международная платформа. Код, проекты с открытым исходным кодом, портфолио.
-
-**GitVerse** · [a1ex_ma](https://gitverse.ru/a1ex_ma)
-Российская платформа контроля версий. Проекты для русскоязычного сообщества.
-
----
-
-## Социальные сети
-
-**Discord** · @a1ex_ma
-Аудио- и видеосвязь, голосовые чаты, рабочие обсуждения и коллаборации.
-
-**ВКонтакте** · [a1ex_ma](https://vk.com/a1ex_ma)
-Когда я не программирую — рисую. Здесь вы найдёте витрину моих работ.
-
-**LeetCode** · [a1ex_ma](https://leetcode.com/u/a1ex_ma)
-Практика решения алгоритмических задач. Редко нахожу на это время, но стараюсь не забрасывать.
+<div class="about-full" style="display:none">
+<hr>
+<h2>Социальные сети</h2>
+<p><strong>Discord</strong> · @a1ex_ma<br>
+Аудио- и видеосвязь, голосовые чаты, рабочие обсуждения и коллаборации.</p>
+<p><strong>ВКонтакте</strong> · <a href="https://vk.com/a1ex_ma">a1ex_ma</a><br>
+Когда я не программирую — рисую. Здесь вы найдёте витрину моих работ.</p>
+<p><strong>LeetCode</strong> · <a href="https://leetcode.com/u/a1ex_ma">a1ex_ma</a><br>
+Практика решения алгоритмических задач. Редко нахожу на это время, но стараюсь не забрасывать.</p>
+</div>
 
 ---
 
@@ -58,9 +62,10 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 **Telegram** · [@a1ex_ma](https://t.me/a1ex_ma) — предпочтительный способ связи по рабочим вопросам
 
-**MAX** · @a1ex_ma
-
-**WhatsApp** · @a1ex_ma
+<div class="about-full" style="display:none">
+<p><strong>MAX</strong> · @a1ex_ma</p>
+<p><strong>WhatsApp</strong> · @a1ex_ma</p>
+</div>
 
 ---
 
@@ -75,3 +80,16 @@ description: "Alex Ma — Data Engineer / Analyst"
 +7 (XXX) XXX-XX-XX
 
 </details>
+
+<script>
+function toggleAbout() {
+  var btn = document.getElementById('about-toggle-btn');
+  var expanded = btn.getAttribute('data-expanded') === 'true';
+  expanded = !expanded;
+  btn.setAttribute('data-expanded', String(expanded));
+  document.querySelectorAll('.about-full').forEach(function(el) {
+    el.style.display = expanded ? 'block' : 'none';
+  });
+  btn.textContent = expanded ? 'Кратко ↑' : 'Подробнее ↓';
+}
+</script>
