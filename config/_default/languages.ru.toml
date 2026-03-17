@@ -9,4 +9,6 @@ title = "A1eksMa"
   headline = "Data Scientist · Data Engineer · Software Developer"
   links = [
     { github = "https://github.com/A1eksMa" },
+    { telegram = "https://t.me/a1ex_ma" },
+    { discord = "https://discord.com/users/a1ex_ma" },
   ]
