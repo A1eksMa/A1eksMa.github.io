@@ -1,0 +1,12 @@
+languageCode = "en"
+languageName = "English"
+weight = 2
+title = "A1eksMa"
+
+[params.author]
+  name = "Aleksandr Ma"
+  image = "img/avatar.png"
+  headline = "Data Scientist · Data Engineer · Software Developer"
+  links = [
+    { github = "https://github.com/A1eksMa" },
+  ]

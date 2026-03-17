@@ -1,0 +1,38 @@
+[[main]]
+  name = "Навыки"
+  pageRef = "skills"
+  weight = 10
+
+[[main]]
+  name = "Образование"
+  pageRef = "education"
+  weight = 20
+
+[[main]]
+  name = "Проекты"
+  pageRef = "projects"
+  weight = 30
+
+[[main]]
+  name = "Блог"
+  pageRef = "blog"
+  weight = 40
+
+[[main]]
+  name = "Контакты"
+  pageRef = "contact"
+  weight = 50
+
+[[main]]
+  identifier = "appearance"
+  weight = 60
+  [main.params]
+    action = "appearance"
+    showName = false
+
+[[main]]
+  identifier = "locale"
+  weight = 70
+  [main.params]
+    action = "locale"
+    showName = false

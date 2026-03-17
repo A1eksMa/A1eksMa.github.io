@@ -1,0 +1,38 @@
+[[main]]
+  name = "Skills"
+  pageRef = "skills"
+  weight = 10
+
+[[main]]
+  name = "Education"
+  pageRef = "education"
+  weight = 20
+
+[[main]]
+  name = "Projects"
+  pageRef = "projects"
+  weight = 30
+
+[[main]]
+  name = "Blog"
+  pageRef = "blog"
+  weight = 40
+
+[[main]]
+  name = "Contact"
+  pageRef = "contact"
+  weight = 50
+
+[[main]]
+  identifier = "appearance"
+  weight = 60
+  [main.params]
+    action = "appearance"
+    showName = false
+
+[[main]]
+  identifier = "locale"
+  weight = 70
+  [main.params]
+    action = "locale"
+    showName = false
