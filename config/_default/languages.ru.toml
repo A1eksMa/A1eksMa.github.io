@@ -6,7 +6,7 @@ title = "A1eksMa"
 [params.author]
   name = "Alex Ma"
   image = "img/avatar.png"
-  headline = "Data Scientist · Data Engineer · Software Developer"
+  headline = "Unix Way · Python Zen · Data Driven"
   links = [
     { github = "https://github.com/A1eksMa" },
     { telegram = "https://t.me/a1ex_ma" },
