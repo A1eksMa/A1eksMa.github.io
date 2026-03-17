@@ -3,7 +3,9 @@ title: "Обо мне"
 description: "Alex Ma — Data Engineer / Analyst"
 ---
 
-## Alex Ma
+<!-- photo placeholder -->
+
+**Alex Ma**
 
 **Дата рождения:** 20 февраля 2002
 **Город:** Омск
@@ -21,11 +23,47 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 ---
 
-## Контакты
+## Системы контроля версий
 
-| | |
-|---|---|
-| GitHub | [A1eksMa](https://github.com/A1eksMa) |
-| Email | [a1ex_ma@mail.ru](mailto:a1ex_ma@mail.ru) |
-| Telegram | [@a1ex_ma](https://t.me/a1ex_ma) |
-| Discord | @a1ex_ma |
+**GitHub** · [A1eksMa](https://github.com/A1eksMa)
+Международная платформа. Код, проекты с открытым исходным кодом, портфолио.
+
+**GitVerse** · [a1ex_ma](https://gitverse.ru/a1ex_ma)
+Российская платформа контроля версий. Проекты для русскоязычного сообщества.
+
+---
+
+## Мессенджеры
+
+**Telegram** · [@a1ex_ma](https://t.me/a1ex_ma) — предпочтительный способ связи по рабочим вопросам
+
+**MAX** · @a1ex_ma
+
+**WhatsApp** · @a1ex_ma
+
+---
+
+## Социальные сети
+
+**Discord** · @a1ex_ma
+Аудио- и видеосвязь, голосовые чаты, рабочие обсуждения и коллаборации.
+
+**ВКонтакте** · [a1ex_ma](https://vk.com/a1ex_ma)
+Когда я не программирую — рисую. Здесь вы найдёте витрину моих работ.
+
+**LeetCode** · [a1ex_ma](https://leetcode.com/u/a1ex_ma)
+Практика решения алгоритмических задач. Редко нахожу на это время, но стараюсь не забрасывать.
+
+---
+
+## Связаться со мной
+
+**Email:** [a1ex_ma@mail.ru](mailto:a1ex_ma@mail.ru)
+
+**Телефон:**
+<details>
+<summary>Показать номер телефона</summary>
+
++7 (XXX) XXX-XX-XX
+
+</details>
