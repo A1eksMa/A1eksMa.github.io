@@ -23,6 +23,14 @@ Faculty of Transport, Oil and Gas · Pipeline and Storage Design, Construction a
 
 ---
 
+## Additional Education
+
+**Data Analyst** · 2022–2023
+
+**Data Driven** · 2025
+
+---
+
 ## Version Control
 
 **GitHub** · [A1eksMa](https://github.com/A1eksMa)
@@ -30,16 +38,6 @@ International platform. Code, open source projects, portfolio.
 
 **GitVerse** · [a1ex_ma](https://gitverse.ru/a1ex_ma)
 Russian version control platform. Projects for the Russian-speaking community.
-
----
-
-## Messengers
-
-**Telegram** · [@a1ex_ma](https://t.me/a1ex_ma) — preferred contact for work matters
-
-**MAX** · @a1ex_ma
-
-**WhatsApp** · @a1ex_ma
 
 ---
 
@@ -53,6 +51,16 @@ When I'm not coding — I draw. A showcase of my artwork.
 
 **LeetCode** · [a1ex_ma](https://leetcode.com/u/a1ex_ma)
 Algorithmic problem solving. Rarely find time for it, but try not to abandon it.
+
+---
+
+## Messengers
+
+**Telegram** · [@a1ex_ma](https://t.me/a1ex_ma) — preferred contact for work matters
+
+**MAX** · @a1ex_ma
+
+**WhatsApp** · @a1ex_ma
 
 ---
 

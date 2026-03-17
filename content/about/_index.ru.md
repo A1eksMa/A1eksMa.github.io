@@ -23,6 +23,14 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 ---
 
+## Дополнительное образование
+
+**Data Analyst** · 2022–2023
+
+**Data Driven** · 2025
+
+---
+
 ## Системы контроля версий
 
 **GitHub** · [A1eksMa](https://github.com/A1eksMa)
@@ -30,16 +38,6 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 **GitVerse** · [a1ex_ma](https://gitverse.ru/a1ex_ma)
 Российская платформа контроля версий. Проекты для русскоязычного сообщества.
-
----
-
-## Мессенджеры
-
-**Telegram** · [@a1ex_ma](https://t.me/a1ex_ma) — предпочтительный способ связи по рабочим вопросам
-
-**MAX** · @a1ex_ma
-
-**WhatsApp** · @a1ex_ma
 
 ---
 
@@ -53,6 +51,16 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 **LeetCode** · [a1ex_ma](https://leetcode.com/u/a1ex_ma)
 Практика решения алгоритмических задач. Редко нахожу на это время, но стараюсь не забрасывать.
+
+---
+
+## Мессенджеры
+
+**Telegram** · [@a1ex_ma](https://t.me/a1ex_ma) — предпочтительный способ связи по рабочим вопросам
+
+**MAX** · @a1ex_ma
+
+**WhatsApp** · @a1ex_ma
 
 ---
 
