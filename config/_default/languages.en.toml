@@ -4,7 +4,7 @@ weight = 2
 title = "A1eksMa"
 
 [params.author]
-  name = "Aleksandr Ma"
+  name = "Alex Ma"
   image = "img/avatar.png"
   headline = "Data Scientist · Data Engineer · Software Developer"
   links = [
