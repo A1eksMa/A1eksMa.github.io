@@ -32,8 +32,9 @@ description: "Alex Ma — Data Engineer / Analyst"
 <div class="about-full" style="display:none">
 <hr>
 <h2>Дополнительное образование</h2>
-<p><strong>Data Analyst</strong> · 2022–2023</p>
-<p><strong>Data Driven</strong> · 2025</p>
+<p><strong>АНО ДПО "Образовательные технологии Яндекса"</strong> · Аналитик данных · 2022–2023 (350 ч.)</p>
+<p><strong>АНО ДПО "Образовательные технологии Яндекса"</strong> · Аналитик данных · 2022–2023 (350 ч.)</p>
+<p><strong>ФГБОУВО "Уфимский государственный нефтяной технический университет"</strong> · Управление данными (data-driven), бизнес-анализ · 2025 (80 ч.)</p>
 </div>
 
 <div class="about-full" style="display:none">
