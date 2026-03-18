@@ -97,9 +97,11 @@ showRecent: false
   opacity: 0.6;
   white-space: nowrap;
   font-weight: 500;
+  grid-column: 1;
 }
 .about-field dd {
   margin: 0;
+  grid-column: 2;
 }
 .about-item {
   margin-bottom: 0.8rem;
@@ -267,25 +269,19 @@ showRecent: false
 
 <div class="full-only"><h3>Мессенджеры</h3></div>
 
-<div class="brief-only about-section-content">
-<div class="about-item">
-<strong>Telegram · <a href="https://t.me/a1ex_ma">@a1ex_ma</a></strong>
-<span>Предпочтительный способ связи по рабочим вопросам</span>
-</div>
-</div>
+<dl class="about-field brief-only">
+<dt>Telegram</dt>
+<dd><a href="https://t.me/a1ex_ma">@a1ex_ma</a></dd>
+</dl>
 
-<div class="full-only about-section-content">
-<div class="about-item">
-<strong>Telegram · <a href="https://t.me/a1ex_ma">@a1ex_ma</a></strong>
-<span>Предпочтительный способ связи по рабочим вопросам</span>
-</div>
-<div class="about-item">
-<strong>MAX · @a1ex_ma</strong>
-</div>
-<div class="about-item">
-<strong>WhatsApp · @a1ex_ma</strong>
-</div>
-</div>
+<dl class="about-field full-only">
+<dt>Telegram</dt>
+<dd><a href="https://t.me/a1ex_ma">@a1ex_ma</a> — Предпочтительный способ связи</dd>
+<dt>MAX</dt>
+<dd>@a1ex_ma</dd>
+<dt>WhatsApp</dt>
+<dd>@a1ex_ma</dd>
+</dl>
 
 </div><!-- #about-body -->
 
