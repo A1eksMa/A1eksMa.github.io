@@ -12,7 +12,6 @@ showAuthor: false
   gap: 2rem;
   align-items: stretch;
   padding: 1.5rem;
-  background: rgba(var(--color-primary-400), 0.08);
   border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -61,7 +60,7 @@ showAuthor: false
 .about-card__role {
   font-size: 0.95rem;
   opacity: 0.7;
-  margin: 0 0 0.8rem;
+  margin: 0 0 1.6rem;
 }
 .about-card__meta {
   display: grid;
@@ -130,10 +129,16 @@ showAuthor: false
 
 /* ───── Section headings ───── */
 #about-body h2 {
-  background: rgba(var(--color-primary-400), 0.13);
+  background: rgba(var(--color-primary-400), 0.18);
   border-radius: 6px;
   padding: 0.2em 0.6em;
   margin-left: -0.6em;
+}
+#about-body h3 {
+  background: rgba(var(--color-primary-400), 0.13);
+  border-radius: 5px;
+  padding: 0.15em 0.5em;
+  margin-left: -0.5em;
 }
 
 /* ───── Print ───── */
@@ -150,11 +155,11 @@ showAuthor: false
     display: block !important;
   }
   .about-card {
-    background: none;
     border: 1px solid #ccc;
     break-inside: avoid;
   }
-  #about-body h2 {
+  #about-body h2,
+  #about-body h3 {
     background: none;
     padding: 0;
     margin-left: 0;
