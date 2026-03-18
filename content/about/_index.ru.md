@@ -279,7 +279,7 @@ showAuthor: false
 
 <div class="about-field full-only">
 <span class="about-field-key">Telegram</span><span><a href="https://t.me/a1ex_ma">@a1ex_ma</a> — Предпочтительный способ связи</span>
-<span class="about-field-key">MAX</span><span>@a1ex_ma</span>
+<span class="about-field-key">MAX</span><span><a href="https://max.ru/u/a1ex_ma">@a1ex_ma</a></span>
 <span class="about-field-key">WhatsApp</span><span>@a1ex_ma</span>
 </div>
 
