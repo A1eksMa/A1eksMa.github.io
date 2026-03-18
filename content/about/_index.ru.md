@@ -2,6 +2,7 @@
 title: "Обо мне"
 description: "Alex Ma — Data Engineer / Analyst"
 layout: "single"
+showAuthor: false
 ---
 
 <style>
