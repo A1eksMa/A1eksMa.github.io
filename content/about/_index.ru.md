@@ -207,7 +207,7 @@ showAuthor: false
 <div class="full-only about-section-content">
 <div class="about-item">
 <strong>Аспирантура</strong>
-<span>Омкий государственный университет им. Ф.М. Достоевского · Экономический факультет</span>
+<span>Омский государственный университет им. Ф.М. Достоевского · Экономический факультет</span>
 </div>
 </div>
 
@@ -275,7 +275,7 @@ showAuthor: false
 <h3>Социальные сети</h3>
 <div class="about-section-content">
 <div class="about-item">
-<strong>Discord · <a href="https://discord.gg/3MMgWb62mn>@a1ex_ma</a></strong>
+<strong>Discord · <a href="https://discord.gg/3MMgWb62mn">@a1ex_ma</a></strong>
 <span>Аудио- и видеосвязь, голосовые чаты, рабочие обсуждения и коллаборации.</span>
 </div>
 <div class="about-item">
