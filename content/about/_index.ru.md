@@ -183,7 +183,7 @@ showAuthor: false
     <div class="about-card__meta">
       <span class="about-card__meta-key">Дата рождения</span><span>20.02.2002</span>
       <span class="about-card__meta-key">Город</span><span>Омск</span>
-      <span class="about-card__meta-key">Статус занятости</span><span>Открыт к сотрудничеству</span>
+      <span class="about-card__meta-key">Статус</span><span>Безработный айтишник</span>
       <span class="about-card__meta-key">Ожидаемая з/п</span><span>от 350 000 р. / мес.</span>
     </div>
   </div>
@@ -275,12 +275,12 @@ showAuthor: false
 <h3>Социальные сети</h3>
 <div class="about-section-content">
 <div class="about-item">
-<strong>Discord · @a1ex_ma</strong>
+<strong>Discord · <a href="https://discord.gg/3MMgWb62mn>@a1ex_ma</a></strong>
 <span>Аудио- и видеосвязь, голосовые чаты, рабочие обсуждения и коллаборации.</span>
 </div>
 <div class="about-item">
 <strong>ВКонтакте · <a href="https://vk.com/a1ex_ma">a1ex_ma</a></strong>
-<span>Когда я не программирую — рисую. Здесь вы найдёте витрину моих работ.</span>
+<span>Когда я не программирую — я рисую, чтобы немного разгрузить мозг. Здесь вы найдёте витрину моих работ.</span>
 </div>
 </div>
 </div>
