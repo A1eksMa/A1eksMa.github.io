@@ -140,9 +140,8 @@ description: "Alex Ma — Data Engineer / Analyst"
     <dl class="about-card__meta">
       <dt>Дата рождения</dt><dd>20.02.2002</dd>
       <dt>Город</dt><dd>Омск</dd>
-      <dt>Статус</dt><dd>Открыт к предложениям</dd>
-      <dt>Email</dt><dd><a href="mailto:a1ex_ma@mail.ru">a1ex_ma@mail.ru</a></dd>
-      <dt>Telegram</dt><dd><a href="https://t.me/a1ex_ma">@a1ex_ma</a></dd>
+      <dt>Статус занятости</dt><dd>Открыт к сотрудничеству</dd>
+      <dt>Ожидаемая заработная плата</dt><dd>350 000 р. / мес.</dd>
     </dl>
   </div>
 </div>
