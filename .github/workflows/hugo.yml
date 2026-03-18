@@ -21,7 +21,7 @@ jobs:
       - name: Overlay hugo branch (config, themes, assets)
         run: |
           git fetch origin hugo
-          git checkout origin/hugo -- config/ themes/ assets/ .gitmodules
+          git checkout origin/hugo -- config/ themes/ assets/ layouts/ .gitmodules
           git submodule update --init --recursive
 
       - name: Install Hugo Extended
