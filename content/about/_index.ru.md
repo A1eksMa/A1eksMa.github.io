@@ -194,7 +194,7 @@ showAuthor: false
 </div>
 </div>
 
-<h3>Дополнительное</h3>
+<h3>Дополнительное образование</h3>
 
 <div class="about-section-content">
 <div class="about-item">
