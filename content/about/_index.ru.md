@@ -175,15 +175,9 @@ description: "Alex Ma — Data Engineer / Analyst"
 </div>
 </div>
 
----
+<h3>Дополнительное</h3>
 
-## Дополнительное образование
-
-<div class="brief-only about-section-content">
-<em>Доступно в полном режиме</em>
-</div>
-
-<div class="full-only about-section-content">
+<div class="about-section-content">
 <div class="about-item">
 <strong>АНО ДПО «Образовательные технологии Яндекса»</strong>
 <span>Аналитик данных · 2022–2023 · 350 ч.</span>
@@ -196,7 +190,9 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 ---
 
-## Системы контроля версий
+## Присутствие в сети
+
+<h3>Контроль версий</h3>
 
 <div class="brief-only about-section-content">
 <div class="about-item">
@@ -215,20 +211,28 @@ description: "Alex Ma — Data Engineer / Analyst"
 </div>
 </div>
 
----
-
-## Социальные сети
+<h3>Учебные платформы</h3>
 
 <div class="brief-only about-section-content">
-<div class="about-item">
-<strong>ВКонтакте · <a href="https://vk.com/a1ex_ma">a1ex_ma</a></strong>
-</div>
 <div class="about-item">
 <strong>LeetCode · <a href="https://leetcode.com/u/a1ex_ma">a1ex_ma</a></strong>
 </div>
 </div>
 
 <div class="full-only about-section-content">
+<div class="about-item">
+<strong>LeetCode · <a href="https://leetcode.com/u/a1ex_ma">a1ex_ma</a></strong>
+<span>Практика решения алгоритмических задач. Редко нахожу на это время, но стараюсь не забрасывать.</span>
+</div>
+<div class="about-item">
+<strong>JavaRush · <a href="https://javarush.com/users/3534015">a1ex_ma</a></strong>
+<span>Интерактивный курс Java с упором на практику.</span>
+</div>
+</div>
+
+<div class="full-only">
+<h3>Социальные сети</h3>
+<div class="about-section-content">
 <div class="about-item">
 <strong>Discord · @a1ex_ma</strong>
 <span>Аудио- и видеосвязь, голосовые чаты, рабочие обсуждения и коллаборации.</span>
@@ -237,15 +241,26 @@ description: "Alex Ma — Data Engineer / Analyst"
 <strong>ВКонтакте · <a href="https://vk.com/a1ex_ma">a1ex_ma</a></strong>
 <span>Когда я не программирую — рисую. Здесь вы найдёте витрину моих работ.</span>
 </div>
-<div class="about-item">
-<strong>LeetCode · <a href="https://leetcode.com/u/a1ex_ma">a1ex_ma</a></strong>
-<span>Практика решения алгоритмических задач. Редко нахожу на это время, но стараюсь не забрасывать.</span>
 </div>
 </div>
 
 ---
 
-## Мессенджеры
+## Контакты
+
+<dl class="about-field">
+<dt>Email</dt>
+<dd><a href="mailto:a1ex_ma@mail.ru">a1ex_ma@mail.ru</a></dd>
+<dt>Телефон</dt>
+<dd>
+<details>
+<summary>Показать номер</summary>
++7 (XXX) XXX-XX-XX
+</details>
+</dd>
+</dl>
+
+<h3>Мессенджеры</h3>
 
 <div class="brief-only about-section-content">
 <div class="about-item">
@@ -266,22 +281,6 @@ description: "Alex Ma — Data Engineer / Analyst"
 <strong>WhatsApp · @a1ex_ma</strong>
 </div>
 </div>
-
----
-
-## Контакты
-
-<dl class="about-field">
-<dt>Email</dt>
-<dd><a href="mailto:a1ex_ma@mail.ru">a1ex_ma@mail.ru</a></dd>
-<dt>Телефон</dt>
-<dd>
-<details>
-<summary>Показать номер</summary>
-+7 (XXX) XXX-XX-XX
-</details>
-</dd>
-</dl>
 
 </div><!-- #about-body -->
 
