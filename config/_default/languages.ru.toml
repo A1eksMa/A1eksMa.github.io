@@ -10,5 +10,5 @@ title = "На главную"
   links = [
     { github = "https://github.com/A1eksMa" },
     { telegram = "https://t.me/a1ex_ma" },
-    { discord = "https://discord.com/users/a1ex_ma" },
+    { email = "mailto:a1ex_ma@mail.ru" },
   ]
