@@ -12,6 +12,7 @@ showAuthor: false
   gap: 2rem;
   align-items: stretch;
   padding: 1.5rem;
+  background: color-mix(in srgb, currentColor 6%, transparent);
   border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -127,6 +128,14 @@ showAuthor: false
   opacity: 0.75;
 }
 
+/* ───── Section headings ───── */
+#about-body h2 {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+  border-radius: 6px;
+  padding: 0.2em 0.6em;
+  margin-left: -0.6em;
+}
+
 /* ───── Print ───── */
 @media print {
   .about-toggle-bar,
@@ -141,8 +150,14 @@ showAuthor: false
     display: block !important;
   }
   .about-card {
+    background: none;
     border: 1px solid #ccc;
     break-inside: avoid;
+  }
+  #about-body h2 {
+    background: none;
+    padding: 0;
+    margin-left: 0;
   }
   body, .prose {
     font-size: 11pt;
