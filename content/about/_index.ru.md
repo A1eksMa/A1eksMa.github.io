@@ -138,7 +138,7 @@ description: "Alex Ma — Data Engineer / Analyst"
     <p class="about-card__name">Alex Ma</p>
     <p class="about-card__role">Data Engineer · Data Analyst</p>
     <dl class="about-card__meta">
-      <dt>Дата рождения</dt><dd>20 февраля 2002</dd>
+      <dt>Дата рождения</dt><dd>20.02.2002</dd>
       <dt>Город</dt><dd>Омск</dd>
       <dt>Статус</dt><dd>Открыт к предложениям</dd>
       <dt>Email</dt><dd><a href="mailto:a1ex_ma@mail.ru">a1ex_ma@mail.ru</a></dd>
@@ -190,7 +190,7 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 ---
 
-## Присутствие в сети
+## В сети
 
 <h3>Контроль версий</h3>
 
