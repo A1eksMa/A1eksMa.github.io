@@ -22,6 +22,10 @@ showAuthor: false
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
+  background: rgba(var(--color-primary-400), 0.13);
+  border-radius: 7px 0 0 7px;
+  margin: -1.5rem 0 -1.5rem -1.5rem;
+  padding: 1.5rem 1.25rem 1.5rem 1.5rem;
 }
 .about-card__photo {
   flex: 1;
