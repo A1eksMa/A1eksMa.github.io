@@ -1,7 +1,7 @@
 languageCode = "ru"
 languageName = "Русский"
 weight = 1
-title = "A1eksMa"
+title = "На главную"
 
 [params.author]
   name = "Alex Ma"

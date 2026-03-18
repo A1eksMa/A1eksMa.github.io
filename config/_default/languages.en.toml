@@ -1,7 +1,7 @@
 languageCode = "en"
 languageName = "English"
 weight = 2
-title = "A1eksMa"
+title = "Home"
 
 [params.author]
   name = "Alex Ma"
