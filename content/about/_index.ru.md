@@ -137,12 +137,20 @@ showAuthor: false
   border-radius: 6px;
   padding: 0.2em 0.6em;
   margin-left: -0.6em;
+  color: rgba(var(--color-neutral-800), 1);
 }
 #about-body h3 {
   background: rgba(var(--color-primary-400), 0.09);
   border-radius: 5px;
   padding: 0.15em 0.5em;
   margin-left: -0.5em;
+  color: rgba(var(--color-neutral-600), 1);
+}
+.dark #about-body h2 {
+  color: rgba(var(--color-neutral-100), 1);
+}
+.dark #about-body h3 {
+  color: rgba(var(--color-neutral-400), 1);
 }
 
 /* ───── Print ───── */
