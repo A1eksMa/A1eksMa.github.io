@@ -12,7 +12,7 @@ showAuthor: false
   gap: 2rem;
   align-items: stretch;
   padding: 1.5rem;
-  background: color-mix(in srgb, currentColor 6%, transparent);
+  background: rgba(var(--color-primary-400), 0.08);
   border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   border-radius: 8px;
   margin-bottom: 1.5rem;
@@ -130,7 +130,7 @@ showAuthor: false
 
 /* ───── Section headings ───── */
 #about-body h2 {
-  background: color-mix(in srgb, currentColor 8%, transparent);
+  background: rgba(var(--color-primary-400), 0.13);
   border-radius: 6px;
   padding: 0.2em 0.6em;
   margin-left: -0.6em;
@@ -190,8 +190,6 @@ showAuthor: false
 
 <div id="about-body">
 
----
-
 ## Образование
 
 <div class="about-section-content">
@@ -227,8 +225,6 @@ showAuthor: false
 <span>АНО ДПО «Образовательные технологии Яндекса» · 2022–2023 · 350 ч.</span>
 </div>
 </div>
-
----
 
 ## В сети
 
@@ -283,8 +279,6 @@ showAuthor: false
 </div>
 </div>
 </div>
-
----
 
 ## Контакты
 
