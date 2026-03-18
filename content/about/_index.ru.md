@@ -174,20 +174,18 @@ description: "Alex Ma — Data Engineer / Analyst"
 <strong>Бакалавр</strong>
 <span>Омский государственный технический университет · Факультет транспорта, нефти и газа · Проектирование, сооружение и эксплуатация газонефтепроводов и газонефтехранилищ</span>
 </div>
-</div>
 
 <h3>Дополнительное</h3>
 
+<div class="about-section-content">
 <div class="about-item">
 <strong>Управление данными (data-driven), бизнес-анализ · 2025 · 80 ч.</strong>
 <span>ФГБОУВО «Уфимский государственный нефтяной технический университет»</span>
 </div>
-</div>
-
-<div class="about-section-content">
 <div class="about-item">
 <strong>Аналитик данных · 2022–2023 · 350 ч.</strong>
 <span>АНО ДПО «Образовательные технологии Яндекса»</span>
+</div>
 </div>
 
 ---
