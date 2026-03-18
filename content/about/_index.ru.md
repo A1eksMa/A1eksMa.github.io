@@ -129,13 +129,13 @@ showAuthor: false
 
 /* ───── Section headings ───── */
 #about-body h2 {
-  background: rgba(var(--color-primary-400), 0.18);
+  background: rgba(var(--color-primary-500), 0.22);
   border-radius: 6px;
   padding: 0.2em 0.6em;
   margin-left: -0.6em;
 }
 #about-body h3 {
-  background: rgba(var(--color-primary-400), 0.13);
+  background: rgba(var(--color-primary-400), 0.09);
   border-radius: 5px;
   padding: 0.15em 0.5em;
   margin-left: -0.5em;
