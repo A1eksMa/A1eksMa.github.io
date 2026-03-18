@@ -1,7 +1,7 @@
 ---
 title: "Обо мне"
 description: "Alex Ma — Data Engineer / Analyst"
-showRecent: false
+layout: "single"
 ---
 
 <style>
