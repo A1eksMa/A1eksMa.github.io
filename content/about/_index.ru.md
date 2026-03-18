@@ -77,6 +77,33 @@ showAuthor: false
   white-space: nowrap;
 }
 
+/* ───── Mobile ───── */
+@media (max-width: 640px) {
+  .about-card {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .about-card__photo-wrap {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px 7px 0 0;
+    margin: -1.5rem -1.5rem 0 -1.5rem;
+    padding: 1.25rem 1.5rem;
+    gap: 1.25rem;
+  }
+  .about-card__photo {
+    flex: none;
+    width: 90px;
+    min-width: unset;
+    max-width: unset;
+  }
+  .about-card__social {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
 /* ───── Toggle ───── */
 .about-toggle-bar {
   margin: 1rem 0 1.5rem;
