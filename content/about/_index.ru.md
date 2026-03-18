@@ -89,6 +89,9 @@ showAuthor: false
 .about-expanded .full-only {
   display: block;
 }
+.about-expanded .full-only.about-field {
+  display: grid;
+}
 .about-expanded .brief-only {
   display: none;
 }
