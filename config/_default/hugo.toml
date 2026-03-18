@@ -2,6 +2,11 @@ baseURL = "https://a1eksma.github.io/"
 defaultContentLanguage = "ru"
 theme = "congo"
 enableRobotsTXT = true
+enableGitInfo = true
+
+[frontmatter]
+  date = [":git", "date", "publishDate"]
+  lastmod = [":git", "lastmod", "date"]
 
 [permalinks]
   blog = "/blog/:slug/"
