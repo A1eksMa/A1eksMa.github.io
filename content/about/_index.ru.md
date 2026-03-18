@@ -1,6 +1,7 @@
 ---
 title: "Обо мне"
 description: "Alex Ma — Data Engineer / Analyst"
+showRecent: false
 ---
 
 <style>
@@ -163,16 +164,18 @@ description: "Alex Ma — Data Engineer / Analyst"
 </div>
 </div>
 
-<div class="brief-only about-section-content">
+<div class="full-only about-section-content">
 <div class="about-item">
 <strong>Аспирантура</strong>
 <span>Омкий государственный университет им. Ф.М. Достоевского · Экономический факультет</span>
 </div>
 </div>
-  
+
+<div class="full-only about-section-content">
 <div class="about-item">
 <strong>Бакалавр</strong>
 <span>Омский государственный технический университет · Факультет транспорта, нефти и газа · Проектирование, сооружение и эксплуатация газонефтепроводов и газонефтехранилищ</span>
+</div>
 </div>
 
 <h3>Дополнительное</h3>
@@ -192,7 +195,7 @@ description: "Alex Ma — Data Engineer / Analyst"
 
 ## В сети
 
-<h3>Контроль версий</h3>
+<div class="full-only"><h3>Контроль версий</h3></div>
 
 <div class="brief-only about-section-content">
 <div class="about-item">
@@ -211,7 +214,7 @@ description: "Alex Ma — Data Engineer / Analyst"
 </div>
 </div>
 
-<h3>Учебные платформы</h3>
+<div class="full-only"><h3>Учебные платформы</h3></div>
 
 <div class="brief-only about-section-content">
 <div class="about-item">
@@ -260,7 +263,7 @@ description: "Alex Ma — Data Engineer / Analyst"
 </dd>
 </dl>
 
-<h3>Мессенджеры</h3>
+<div class="full-only"><h3>Мессенджеры</h3></div>
 
 <div class="brief-only about-section-content">
 <div class="about-item">
