@@ -173,7 +173,7 @@ showAuthor: false
 
 ## Образование
 
-<div class="brief-only about-section-content">
+<div class="about-section-content">
 <div class="about-item">
 <strong>Экономист</strong>
 <span>Омский государственный университет им. Ф.М. Достоевского · Экономический факультет · Экономическая теория</span>
