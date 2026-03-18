@@ -10,7 +10,7 @@ showAuthor: false
 .about-card {
   display: flex;
   gap: 2rem;
-  align-items: flex-start;
+  align-items: stretch;
   padding: 1.5rem;
   border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
   border-radius: 8px;
@@ -24,8 +24,11 @@ showAuthor: false
   gap: 0.6rem;
 }
 .about-card__photo {
-  width: 150px;
-  height: 150px;
+  flex: 1;
+  width: auto;
+  min-width: 120px;
+  max-width: 220px;
+  aspect-ratio: 1;
   border-radius: 50%;
   object-fit: cover;
   object-position: center top;
