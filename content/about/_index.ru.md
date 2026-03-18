@@ -43,14 +43,9 @@ showRecent: false
   font-size: 0.9rem;
   line-height: 1.6;
 }
-.about-card__meta dt {
+.about-card__meta-key {
   opacity: 0.6;
   white-space: nowrap;
-  grid-column: 1;
-}
-.about-card__meta dd {
-  margin: 0;
-  grid-column: 2;
 }
 
 /* ───── Toggle ───── */
@@ -93,15 +88,10 @@ showRecent: false
   line-height: 1.7;
   margin-bottom: 0.5rem;
 }
-.about-field dt {
+.about-field-key {
   opacity: 0.6;
   white-space: nowrap;
   font-weight: 500;
-  grid-column: 1;
-}
-.about-field dd {
-  margin: 0;
-  grid-column: 2;
 }
 .about-item {
   margin-bottom: 0.8rem;
@@ -142,12 +132,12 @@ showRecent: false
   <div class="about-card__info">
     <p class="about-card__name">Alex Ma</p>
     <p class="about-card__role">Data Engineer · Data Analyst</p>
-    <dl class="about-card__meta">
-      <dt>Дата рождения</dt><dd>20.02.2002</dd>
-      <dt>Город</dt><dd>Омск</dd>
-      <dt>Статус занятости</dt><dd>Открыт к сотрудничеству</dd>
-      <dt>Ожидаемая з/п</dt><dd>от 350 000 р. / мес.</dd>
-    </dl>
+    <div class="about-card__meta">
+      <span class="about-card__meta-key">Дата рождения</span><span>20.02.2002</span>
+      <span class="about-card__meta-key">Город</span><span>Омск</span>
+      <span class="about-card__meta-key">Статус занятости</span><span>Открыт к сотрудничеству</span>
+      <span class="about-card__meta-key">Ожидаемая з/п</span><span>от 350 000 р. / мес.</span>
+    </div>
   </div>
 </div>
 
@@ -255,33 +245,22 @@ showRecent: false
 
 ## Контакты
 
-<dl class="about-field">
-<dt>Email</dt>
-<dd><a href="mailto:a1ex_ma@mail.ru">a1ex_ma@mail.ru</a></dd>
-<dt>Телефон</dt>
-<dd>
-<details>
-<summary>Показать номер</summary>
-+7 (XXX) XXX-XX-XX
-</details>
-</dd>
-</dl>
+<div class="about-field">
+<span class="about-field-key">Email</span><span><a href="mailto:a1ex_ma@mail.ru">a1ex_ma@mail.ru</a></span>
+<span class="about-field-key">Телефон</span><span><details><summary>Показать номер</summary>+7 (XXX) XXX-XX-XX</details></span>
+</div>
 
 <div class="full-only"><h3>Мессенджеры</h3></div>
 
-<dl class="about-field brief-only">
-<dt>Telegram</dt>
-<dd><a href="https://t.me/a1ex_ma">@a1ex_ma</a></dd>
-</dl>
+<div class="about-field brief-only">
+<span class="about-field-key">Telegram</span><span><a href="https://t.me/a1ex_ma">@a1ex_ma</a></span>
+</div>
 
-<dl class="about-field full-only">
-<dt>Telegram</dt>
-<dd><a href="https://t.me/a1ex_ma">@a1ex_ma</a> — Предпочтительный способ связи</dd>
-<dt>MAX</dt>
-<dd>@a1ex_ma</dd>
-<dt>WhatsApp</dt>
-<dd>@a1ex_ma</dd>
-</dl>
+<div class="about-field full-only">
+<span class="about-field-key">Telegram</span><span><a href="https://t.me/a1ex_ma">@a1ex_ma</a> — Предпочтительный способ связи</span>
+<span class="about-field-key">MAX</span><span>@a1ex_ma</span>
+<span class="about-field-key">WhatsApp</span><span>@a1ex_ma</span>
+</div>
 
 </div><!-- #about-body -->
 
