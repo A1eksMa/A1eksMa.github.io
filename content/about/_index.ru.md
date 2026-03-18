@@ -22,7 +22,7 @@ showAuthor: false
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
-  background: rgba(var(--color-primary-500), 0.15);
+  background: rgba(var(--color-primary-600), 0.22);
   border-radius: 7px 0 0 7px;
   margin: -1.5rem 0 -1.5rem -1.5rem;
   padding: 1.5rem 1.25rem 1.5rem 1.5rem;
@@ -42,12 +42,11 @@ showAuthor: false
   gap: 0.65rem;
 }
 .about-card__social a {
-  opacity: 0.55;
   color: inherit;
   line-height: 0;
 }
 .about-card__social a:hover {
-  opacity: 1;
+  opacity: 0.7;
 }
 .about-card__social svg {
   width: 20px;
@@ -106,6 +105,8 @@ showAuthor: false
 /* ───── Section layout ───── */
 .about-section-content {
   margin-bottom: 0.5rem;
+}
+.about-online .about-section-content {
   padding-left: 0.75rem;
 }
 .about-field {
@@ -134,7 +135,7 @@ showAuthor: false
 
 /* ───── Section headings ───── */
 #about-body h2 {
-  background: rgba(var(--color-primary-500), 0.22);
+  background: rgba(var(--color-primary-500), 0.15);
   border-radius: 6px;
   padding: 0.2em 0.6em;
   margin-left: -0.6em;
@@ -246,6 +247,7 @@ showAuthor: false
 
 ## В сети
 
+<div class="about-online">
 <div class="full-only"><h3>Контроль версий</h3></div>
 
 <div class="brief-only about-section-content">
@@ -297,6 +299,7 @@ showAuthor: false
 </div>
 </div>
 </div>
+</div><!-- .about-online -->
 
 ## Контакты
 
