@@ -151,7 +151,7 @@ showRecent: false
   </div>
   <div class="about-card__info">
     <p class="about-card__name">Alex Ma</p>
-    <p class="about-card__role">Data Analyst · Data Engineer · Software Developer</p>
+    <p class="about-card__role">Data Scientist · Data Engineer · Software Developer</p>
     <div class="about-card__meta">
       <span class="about-card__meta-key">Дата рождения</span><span>20.02.2002</span>
       <span class="about-card__meta-key">Город</span><span>Омск</span>
