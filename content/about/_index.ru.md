@@ -46,9 +46,11 @@ showRecent: false
 .about-card__meta dt {
   opacity: 0.6;
   white-space: nowrap;
+  grid-column: 1;
 }
 .about-card__meta dd {
   margin: 0;
+  grid-column: 2;
 }
 
 /* ───── Toggle ───── */
