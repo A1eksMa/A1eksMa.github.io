@@ -22,7 +22,7 @@ showAuthor: false
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
-  background: rgba(var(--color-primary-600), 0.35);
+  background: rgba(var(--color-primary-500), 0.22);
   border-radius: 7px 0 0 7px;
   margin: -1.5rem 0 -1.5rem -1.5rem;
   padding: 1.5rem 1.25rem 1.5rem 1.5rem;
@@ -106,6 +106,7 @@ showAuthor: false
 /* ───── Section layout ───── */
 .about-section-content {
   margin-bottom: 0.5rem;
+  padding-left: 0.75rem;
 }
 .about-field {
   display: grid;
