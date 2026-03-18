@@ -270,13 +270,10 @@ showAuthor: false
 <div class="about-field">
 <span class="about-field-key">Email</span><span><a href="mailto:a1ex_ma@mail.ru">a1ex_ma@mail.ru</a></span>
 <span class="about-field-key">Телефон</span><span><details><summary>Показать номер</summary>+7 (XXX) XXX-XX-XX</details></span>
+<span class="about-field-key brief-only">Telegram</span><span class="brief-only"><a href="https://t.me/a1ex_ma">@a1ex_ma</a></span>
 </div>
 
 <div class="full-only"><h3>Мессенджеры</h3></div>
-
-<div class="about-field brief-only">
-<span class="about-field-key">Telegram</span><span><a href="https://t.me/a1ex_ma">@a1ex_ma</a></span>
-</div>
 
 <div class="about-field full-only">
 <span class="about-field-key">Telegram</span><span><a href="https://t.me/a1ex_ma">@a1ex_ma</a> — Предпочтительный способ связи</span>
