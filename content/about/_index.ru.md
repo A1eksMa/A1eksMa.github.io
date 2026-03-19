@@ -222,7 +222,7 @@ showAuthor: false
     <p class="about-card__name">Alex Ma</p>
     <p class="about-card__role">Data Scientist · Software Developer</p>
     <div class="about-card__meta">
-      <span class="about-card__meta-key">Дата рождения</span><span>20.02.2002</span>
+      <span class="about-card__meta-key">Дата рождения</span><span>не указана</span>
       <span class="about-card__meta-key">Город</span><span>Омск</span>
       <span class="about-card__meta-key">Статус</span><span>Безработный айтишник</span>
       <span class="about-card__meta-key">Ожидаемая з/п</span><span>от 350 000 р. / мес.</span>
