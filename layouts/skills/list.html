@@ -7,7 +7,7 @@
     {{ .Title }}
   </h1>
 
-  <!-- Breadcrumb navigation -->
+  <!-- Breadcrumb -->
   <nav class="mb-3 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400 select-none">
     <button id="crumb-home"
       class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
@@ -27,7 +27,6 @@
       style="height: 460px; will-change: transform;"></div>
   </div>
 
-  <!-- Hint -->
   <p id="chart-hint" class="mt-2 text-center text-xs text-neutral-400 dark:text-neutral-500">
     Нажмите на трек, чтобы увидеть детали
   </p>
@@ -52,58 +51,43 @@
 
 </div>
 
-<!-- Data -->
-<script>
-window.__COMP__ = {{ $comp | jsonify | safeJS }};
-</script>
-
-<!-- ECharts 5 -->
+<script>window.__COMP__ = {{ $comp | jsonify | safeJS }};</script>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.6.0/dist/echarts.min.js"></script>
-
 <script>
 (function () {
-  var DATA = window.__COMP__;
-
-  // Level name lookup
+  var DATA  = window.__COMP__;
   var LEVEL = {};
   DATA.scale.forEach(function (s) { LEVEL[s.level] = s.name; });
 
-  // ── Color helpers ──────────────────────────────────────────────
+  // ── Color ──────────────────────────────────────────────────────
   function hexToRgb(hex) {
-    return [
-      parseInt(hex.slice(1, 3), 16),
-      parseInt(hex.slice(3, 5), 16),
-      parseInt(hex.slice(5, 7), 16)
-    ];
+    return [parseInt(hex.slice(1,3),16), parseInt(hex.slice(3,5),16), parseInt(hex.slice(5,7),16)];
+  }
+  function shade(base, i, total) {
+    var rgb   = hexToRgb(base);
+    var alpha = 0.95 - (i / Math.max(total-1,1)) * 0.58;
+    return 'rgba('+rgb.join(',')+','+alpha.toFixed(2)+')';
   }
 
-  function shade(baseColor, index, total) {
-    var rgb = hexToRgb(baseColor);
-    var alpha = 0.95 - (index / Math.max(total - 1, 1)) * 0.58;
-    return 'rgba(' + rgb.join(',') + ',' + alpha.toFixed(2) + ')';
+  // ── Period ─────────────────────────────────────────────────────
+  function pToMs(p) {
+    return new Date(parseInt(p.slice(0,4)), (parseInt(p.slice(5))-1)*3, 1).getTime();
   }
-
-  // ── Period helpers ─────────────────────────────────────────────
-  function periodToMs(p) {
-    var year = parseInt(p.slice(0, 4));
-    var q = parseInt(p.slice(5));
-    return new Date(year, (q - 1) * 3, 1).getTime();
-  }
-
-  function msToLabel(ms) {
+  function msLabel(ms) {
     var d = new Date(ms);
-    return 'Q' + (Math.floor(d.getMonth() / 3) + 1) + ' ' + d.getFullYear();
+    return 'Q'+(Math.floor(d.getMonth()/3)+1)+' '+d.getFullYear();
   }
 
-  // ── Chart init ─────────────────────────────────────────────────
-  var isDark = document.documentElement.classList.contains('dark');
+  // ── ECharts ────────────────────────────────────────────────────
+  var isDark   = document.documentElement.classList.contains('dark');
   var chartDom = document.getElementById('competency-chart');
-  var chart = echarts.init(chartDom, isDark ? 'dark' : null, { renderer: 'canvas' });
+  var chart    = echarts.init(chartDom, isDark ? 'dark' : null, { renderer: 'canvas' });
 
   // ── State ──────────────────────────────────────────────────────
-  var state = { level: 1, trackIdx: null, compId: null };
+  var state     = { level: 1, trackIdx: null, compId: null };
+  var pendingL3 = null;  // ожидает анимации "снизу вверх"
 
-  // ── DOM refs ───────────────────────────────────────────────────
+  // ── DOM ────────────────────────────────────────────────────────
   var crumbHome  = document.getElementById('crumb-home');
   var crumbSep1  = document.getElementById('crumb-sep1');
   var crumbTrack = document.getElementById('crumb-track');
@@ -112,118 +96,93 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
   var hint       = document.getElementById('chart-hint');
 
   function updateNav() {
-    var atTrack = state.level >= 2;
-    var atComp  = state.level >= 3;
-    crumbSep1.classList.toggle('hidden', !atTrack);
-    crumbTrack.classList.toggle('hidden', !atTrack);
-    crumbSep2.classList.toggle('hidden', !atComp);
-    crumbComp.classList.toggle('hidden',  !atComp);
-
-    if (atTrack) crumbTrack.textContent = DATA.tracks[state.trackIdx].name;
-    if (atComp) {
-      var comp = DATA.tracks[state.trackIdx].components.find(function (c) {
-        return c.id === state.compId;
-      });
-      crumbComp.textContent = comp ? comp.name : '';
+    var at2 = state.level >= 2, at3 = state.level >= 3;
+    crumbSep1.classList.toggle('hidden', !at2);
+    crumbTrack.classList.toggle('hidden', !at2);
+    crumbSep2.classList.toggle('hidden', !at3);
+    crumbComp.classList.toggle('hidden',  !at3);
+    if (at2) crumbTrack.textContent = DATA.tracks[state.trackIdx].name;
+    if (at3) {
+      var c = DATA.tracks[state.trackIdx].components.find(function(c){ return c.id===state.compId; });
+      crumbComp.textContent = c ? c.name : '';
     }
-
-    if (state.level === 1) hint.textContent = 'Нажмите на трек, чтобы увидеть детали';
-    else if (state.level === 2) hint.textContent = 'Нажмите на компонент, чтобы увидеть прогресс во времени';
-    else hint.textContent = 'Прокрутите или потяните для изменения периода';
+    hint.textContent = state.level===1 ? 'Нажмите на трек, чтобы увидеть детали'
+                     : state.level===2 ? 'Нажмите на компонент, чтобы увидеть прогресс'
+                     : 'Прокрутите для изменения периода';
   }
 
-  // ── Flip animation ─────────────────────────────────────────────
-  // pivotX  — X-координата оси вращения в пикселях (точка клика)
-  // callback — вызывается в момент, когда график "ребром" (невидим)
-  var HALF = 300; // мс на каждую половину анимации
+  // ── Flip helpers ───────────────────────────────────────────────
+  var HALF     = 280;
   var flipping = false;
 
-  function flipTo(pivotX, callback) {
+  function doFlip(axis, pivot, callback, afterFlip) {
     if (flipping) return;
     flipping = true;
+    var originIn  = axis==='Y' ? pivot+'px center' : 'center '+pivot+'px';
+    var rotOut    = axis==='Y' ? 'rotateY(90deg)'  : 'rotateX(90deg)';
+    var rotIn     = axis==='Y' ? 'rotateY(-90deg)' : 'rotateX(-90deg)';
 
-    // Фаза 1: складываемся к оси (точка клика)
-    chartDom.style.transformOrigin = pivotX + 'px center';
-    chartDom.style.transition = 'transform ' + HALF + 'ms ease-in';
-    chartDom.style.transform  = 'rotateY(90deg)';
+    chartDom.style.transformOrigin = originIn;
+    chartDom.style.transition      = 'transform '+HALF+'ms ease-in';
+    chartDom.style.transform       = rotOut;
 
     setTimeout(function () {
-      // Момент невидимости — обновляем данные без анимации ECharts
       callback();
-
-      // Фаза 2: разворачиваемся из центра
       chartDom.style.transition      = 'none';
       chartDom.style.transformOrigin = 'center center';
-      chartDom.style.transform       = 'rotateY(-90deg)';
-
+      chartDom.style.transform       = rotIn;
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          chartDom.style.transition = 'transform ' + HALF + 'ms ease-out';
-          chartDom.style.transform  = 'rotateY(0deg)';
-
+          chartDom.style.transition = 'transform '+HALF+'ms ease-out';
+          chartDom.style.transform  = axis==='Y' ? 'rotateY(0deg)' : 'rotateX(0deg)';
           setTimeout(function () {
-            chartDom.style.transition      = '';
-            chartDom.style.transformOrigin = '';
-            chartDom.style.transform       = '';
+            chartDom.style.transition = chartDom.style.transformOrigin = chartDom.style.transform = '';
             flipping = false;
+            if (afterFlip) afterFlip();
           }, HALF);
         });
       });
     }, HALF);
   }
 
-  // Простой центровой flip — для навигации назад
-  function flipCenter(callback) {
-    flipTo(chartDom.offsetWidth / 2, callback);
-  }
+  // L1↔L2: вращение вокруг вертикальной оси (rotateY)
+  function flipX(pivotX, cb, after) { doFlip('Y', pivotX, cb, after); }
+  // L2↔L3: вращение вокруг горизонтальной оси (rotateX)
+  function flipY(pivotY, cb, after) { doFlip('X', pivotY, cb, after); }
 
-  // ── Chart option builders ──────────────────────────────────────
-  // animated=false отключает встроенную анимацию ECharts (она скрыта под флипом)
-  function optL1(animated) {
+  // ── L1: вертикальный барплот ───────────────────────────────────
+  function optL1(anim) {
     var tracks = DATA.tracks;
     return {
-      animation: !!animated,
+      animation: !!anim, animationDuration: 500, animationEasing: 'cubicOut',
       tooltip: {
         trigger: 'item',
         formatter: function (p) {
           var t = tracks[p.dataIndex];
-          if (t.placeholder) return '<b>' + t.name + '</b><br/>Скоро';
-          return '<b>' + t.name + '</b><br/>Уровень: ' + t.level +
-                 (LEVEL[t.level] ? ' — ' + LEVEL[t.level] : '') +
+          if (t.placeholder) return '<b>'+t.name+'</b><br/>Скоро';
+          return '<b>'+t.name+'</b><br/>Уровень: '+t.level+(LEVEL[t.level]?' — '+LEVEL[t.level]:'')+
                  '<br/><small style="color:#aaa">Нажмите для деталей</small>';
         }
       },
       grid: { top: 20, bottom: 64, left: 44, right: 16 },
       xAxis: {
         type: 'category',
-        data: tracks.map(function (t) { return t.name; }),
+        data: tracks.map(function(t){ return t.name; }),
         axisLabel: { interval: 0, rotate: 14, fontSize: 12, overflow: 'truncate', width: 130 }
       },
-      yAxis: {
-        type: 'value', min: 0, max: 10, interval: 1,
-        name: 'Уровень', nameLocation: 'end'
-      },
+      yAxis: { type: 'value', min: 0, max: 10, interval: 1, name: 'Уровень', nameLocation: 'end' },
       series: [{
-        type: 'bar',
-        barMaxWidth: 72,
-        cursor: 'pointer',
+        type: 'bar', barMaxWidth: 72, cursor: 'pointer',
         data: tracks.map(function (t) {
           return {
             value: t.placeholder ? 0.4 : t.level,
-            itemStyle: {
-              color: t.color,
-              opacity: t.placeholder ? 0.22 : 0.88,
-              borderRadius: [5, 5, 0, 0]
-            },
+            itemStyle: { color: t.color, opacity: t.placeholder ? 0.22 : 0.88, borderRadius: [5,5,0,0] },
             label: {
-              show: !t.placeholder,
-              position: 'top',
+              show: !t.placeholder, position: 'top', fontSize: 11, lineHeight: 16,
               formatter: function (p) {
                 var lv = tracks[p.dataIndex].level;
-                return lv + '\n' + (LEVEL[lv] ? LEVEL[lv].split(' ')[0] : '');
-              },
-              fontSize: 11,
-              lineHeight: 16
+                return lv+'\n'+(LEVEL[lv]?LEVEL[lv].split(' ')[0]:'');
+              }
             }
           };
         })
@@ -231,52 +190,48 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     };
   }
 
-  function optL2(trackIdx, animated) {
+  // ── L2: горизонтальный барплот (полоски сверху↓, вылетают слева→) ──
+  // animDelay: задержка ECharts-анимации в мс (синхронизируется с флипом)
+  function optL2(trackIdx, animDelay) {
     var track  = DATA.tracks[trackIdx];
-    var sorted = track.components.slice().sort(function (a, b) { return b.level - a.level; });
+    var sorted = track.components.slice().sort(function(a,b){ return b.level-a.level; });
     var color  = track.color;
-
+    var anim   = animDelay != null;
     return {
-      animation: !!animated,
+      animation: anim, animationDuration: 600, animationEasing: 'cubicOut',
+      animationDelay: animDelay || 0,
       tooltip: {
         trigger: 'item',
         formatter: function (p) {
           var c = sorted[p.dataIndex];
-          var s = '<b>' + c.name + '</b><br/>Уровень: ' + c.level +
-                  (LEVEL[c.level] ? ' — ' + LEVEL[c.level] : '');
-          if (c.status === 'archive') s += '<br/><em style="color:#aaa">архив</em>';
+          var s = '<b>'+c.name+'</b><br/>Уровень: '+c.level+(LEVEL[c.level]?' — '+LEVEL[c.level]:'');
+          if (c.status==='archive') s += '<br/><em style="color:#aaa">архив</em>';
           if (c.timeline && c.timeline.length > 1)
             s += '<br/><small style="color:#aaa">Нажмите для прогресса</small>';
           return s;
         }
       },
-      grid: { top: 20, bottom: 64, left: 44, right: 16 },
-      xAxis: {
-        type: 'category',
-        data: sorted.map(function (c) { return c.name; }),
-        axisLabel: { interval: 0, rotate: 14, fontSize: 12 }
-      },
+      grid: { top: 8, bottom: 36, left: 110, right: 48 },
+      xAxis: { type: 'value', min: 0, max: 10, interval: 1 },
       yAxis: {
-        type: 'value', min: 0, max: 10, interval: 1,
-        name: 'Уровень', nameLocation: 'end'
+        type: 'category',
+        data: sorted.map(function(c){ return c.name; }),
+        inverse: true,   // самые высокие — сверху
+        axisLabel: { fontSize: 12 }
       },
       series: [{
-        type: 'bar',
-        barMaxWidth: 72,
-        cursor: 'pointer',
+        type: 'bar', barMaxHeight: 34, cursor: 'pointer',
         data: sorted.map(function (c, i) {
           return {
             value: c.level,
             itemStyle: {
               color: shade(color, i, sorted.length),
-              opacity: c.status === 'archive' ? 0.42 : 1,
-              borderRadius: [5, 5, 0, 0]
+              opacity: c.status==='archive' ? 0.42 : 1,
+              borderRadius: [0,5,5,0]
             },
             label: {
-              show: true,
-              position: 'top',
-              formatter: function (p) { return sorted[p.dataIndex].level; },
-              fontSize: 12
+              show: true, position: 'right', fontSize: 12,
+              formatter: function(p){ return sorted[p.dataIndex].level; }
             }
           };
         })
@@ -284,96 +239,110 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     };
   }
 
-  function optL3(trackIdx, compId, animated) {
+  // ── L3: точечно-линейный график ────────────────────────────────
+  // zeroed=true — все y=0 (невидимая фаза флипа)
+  function buildL3Series(trackIdx, compId, zeroed) {
     var track = DATA.tracks[trackIdx];
-    var comp  = track.components.find(function (c) { return c.id === compId; });
-    var tl    = comp.timeline;
-    var color = track.color;
+    var comp  = track.components.find(function(c){ return c.id===compId; });
+    var tl    = comp.timeline, color = track.color;
 
-    var lineData = tl.map(function (p) { return [periodToMs(p.period), p.level]; });
-
-    var annotated = tl.filter(function (p) { return p.annotation; }).map(function (p) {
+    var lineData  = tl.map(function(p){ return [pToMs(p.period), zeroed ? 0 : p.level]; });
+    var annotated = zeroed ? [] : tl.filter(function(p){ return p.annotation; }).map(function(p){
       return {
-        value: [periodToMs(p.period), p.level],
+        value: [pToMs(p.period), p.level],
         label: {
-          show: true,
-          position: 'top',
-          formatter: p.annotation,
-          fontSize: 11,
+          show: true, position: 'top', formatter: p.annotation, fontSize: 11,
           backgroundColor: 'rgba(255,255,255,0.9)',
-          borderColor: color,
-          borderWidth: 1,
-          borderRadius: 4,
-          padding: [3, 7],
-          color: '#333'
+          borderColor: color, borderWidth: 1, borderRadius: 4, padding: [3,7], color: '#333'
         }
       };
     });
 
     var series = [{
-      type: 'line',
-      smooth: 0.25,
-      data: lineData,
-      lineStyle: { color: color, width: 3 },
-      itemStyle: { color: color },
-      symbolSize: 8,
-      z: 1
+      type: 'line', smooth: 0.25, animation: false,
+      data: lineData, lineStyle: { color: color, width: 3 },
+      itemStyle: { color: color }, symbolSize: 8, z: 1
     }];
-
     if (annotated.length > 0) {
-      series.push({
-        type: 'scatter',
-        data: annotated,
-        symbolSize: 13,
-        itemStyle: { color: color },
-        z: 2
-      });
+      series.push({ type: 'scatter', data: annotated, symbolSize: 13,
+                    itemStyle: { color: color }, animation: false, z: 2 });
     }
+    return series;
+  }
 
+  function optL3(trackIdx, compId, zeroed) {
     return {
-      animation: !!animated,
+      animation: false,
       tooltip: {
         trigger: 'axis',
-        formatter: function (params) {
+        formatter: function(params){
           var v = params[0].value;
-          return msToLabel(v[0]) + '<br/>Уровень: ' + v[1] +
-                 (LEVEL[v[1]] ? ' — ' + LEVEL[v[1]] : '');
+          return msLabel(v[0])+'<br/>Уровень: '+v[1]+(LEVEL[v[1]]?' — '+LEVEL[v[1]]:'');
         }
       },
       grid: { top: 20, bottom: 76, left: 52, right: 24 },
-      xAxis: {
-        type: 'time',
-        axisLabel: { formatter: function (val) { return msToLabel(val); }, fontSize: 11 }
-      },
-      yAxis: {
-        type: 'value', min: 0, max: 10, interval: 1,
-        name: 'Уровень', nameLocation: 'end',
-        axisLabel: { formatter: function (v) { return v > 0 ? v : ''; } }
-      },
+      xAxis: { type: 'time', axisLabel: { formatter: function(v){ return msLabel(v); }, fontSize: 11 } },
+      yAxis: { type: 'value', min: 0, max: 10, interval: 1, name: 'Уровень', nameLocation: 'end',
+               axisLabel: { formatter: function(v){ return v>0?v:''; } } },
       dataZoom: [
         { type: 'inside', xAxisIndex: 0 },
-        { type: 'slider', xAxisIndex: 0, bottom: 8, height: 22 }
+        { type: 'slider',  xAxisIndex: 0, bottom: 8, height: 22 }
       ],
-      series: series
+      series: buildL3Series(trackIdx, compId, zeroed)
     };
   }
 
-  // ── Navigation (без анимации ECharts — перекрыта CSS-флипом) ───
+  // После флипа — запускаем анимацию точек снизу вверх
+  function growL3() {
+    if (!pendingL3) return;
+    var p = pendingL3; pendingL3 = null;
+    var track = DATA.tracks[p.trackIdx];
+    var comp  = track.components.find(function(c){ return c.id===p.compId; });
+    var tl    = comp.timeline, color = track.color;
+
+    var realData  = tl.map(function(p){ return [pToMs(p.period), p.level]; });
+    var annotated = tl.filter(function(p){ return p.annotation; }).map(function(p){
+      return {
+        value: [pToMs(p.period), p.level],
+        label: {
+          show: true, position: 'top', formatter: p.annotation, fontSize: 11,
+          backgroundColor: 'rgba(255,255,255,0.9)',
+          borderColor: color, borderWidth: 1, borderRadius: 4, padding: [3,7], color: '#333'
+        }
+      };
+    });
+
+    var series = [{
+      type: 'line', smooth: 0.25,
+      animation: true, animationDuration: 700, animationEasing: 'cubicOut',
+      data: realData, lineStyle: { color: color, width: 3 },
+      itemStyle: { color: color }, symbolSize: 8, z: 1
+    }];
+    if (annotated.length > 0) {
+      series.push({ type: 'scatter', data: annotated, symbolSize: 13,
+                    itemStyle: { color: color }, animation: true, animationDuration: 700, z: 2 });
+    }
+    chart.setOption({ series: series }); // partial update — только данные
+  }
+
+  // ── Navigation ─────────────────────────────────────────────────
   function goL1() {
+    pendingL3 = null;
     state = { level: 1, trackIdx: null, compId: null };
     chart.setOption(optL1(false), true);
     updateNav();
   }
-
   function goL2(idx) {
+    pendingL3 = null;
     state = { level: 2, trackIdx: idx, compId: null };
-    chart.setOption(optL2(idx, false), true);
+    // animDelay=HALF: полоски начинают вылетать когда флип заканчивается
+    chart.setOption(optL2(idx, HALF), true);
     updateNav();
   }
-
   function goL3(idx, compId) {
     state = { level: 3, trackIdx: idx, compId: compId };
-    chart.setOption(optL3(idx, compId, false), true);
+    pendingL3 = { trackIdx: idx, compId: compId };
+    chart.setOption(optL3(idx, compId, true), true); // zeroed
     updateNav();
   }
 
@@ -386,29 +355,29 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
         var track = DATA.tracks[params.dataIndex];
         if (track && !track.placeholder && track.components && track.components.length > 0) {
           var px = params.event.offsetX;
-          flipTo(px, function () { goL2(params.dataIndex); });
+          flipX(px, function(){ goL2(params.dataIndex); });
         }
 
       } else if (state.level === 2) {
         var track2  = DATA.tracks[state.trackIdx];
-        var sorted2 = track2.components.slice().sort(function (a, b) { return b.level - a.level; });
+        var sorted2 = track2.components.slice().sort(function(a,b){ return b.level-a.level; });
         var comp    = sorted2[params.dataIndex];
         if (comp && comp.timeline && comp.timeline.length > 1) {
-          var px2 = params.event.offsetX;
-          flipTo(px2, function () { goL3(state.trackIdx, comp.id); });
+          var py = params.event.offsetY;
+          flipY(py, function(){ goL3(state.trackIdx, comp.id); }, growL3);
         }
       }
     });
   }
 
-  // Breadcrumb — центровой flip
+  // ── Breadcrumb back ────────────────────────────────────────────
   crumbHome.addEventListener('click', function () {
-    if (state.level > 1 && !flipping) flipCenter(goL1);
+    if (!flipping) flipX(chartDom.offsetWidth/2, goL1);
   });
   crumbTrack.addEventListener('click', function () {
-    if (state.level > 2 && !flipping) {
+    if (state.level===3 && !flipping) {
       var idx = state.trackIdx;
-      flipCenter(function () { goL2(idx); });
+      flipY(chartDom.offsetHeight/2, function(){ goL2(idx); });
     }
   });
 
@@ -419,9 +388,9 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     chart.dispose();
     chart = echarts.init(chartDom, dark ? 'dark' : null, { renderer: 'canvas' });
     attachClick();
-    if (cur.level === 1) chart.setOption(optL1(true));
-    else if (cur.level === 2) chart.setOption(optL2(cur.trackIdx, true));
-    else chart.setOption(optL3(cur.trackIdx, cur.compId, true));
+    if (cur.level===1)      chart.setOption(optL1(true));
+    else if (cur.level===2) chart.setOption(optL2(cur.trackIdx, null));
+    else                    chart.setOption(optL3(cur.trackIdx, cur.compId, false));
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   // ── Resize ─────────────────────────────────────────────────────
