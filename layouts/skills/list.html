@@ -20,10 +20,12 @@
     <span id="crumb-comp" class="hidden font-medium text-neutral-700 dark:text-neutral-300"></span>
   </nav>
 
-  <!-- Chart container -->
-  <div id="competency-chart"
-    class="w-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900"
-    style="height: 460px;"></div>
+  <!-- Perspective wrapper — required for 3D flip -->
+  <div id="chart-wrapper" style="perspective: 1400px; perspective-origin: center center;">
+    <div id="competency-chart"
+      class="w-full rounded-lg border border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900"
+      style="height: 460px; will-change: transform;"></div>
+  </div>
 
   <!-- Hint -->
   <p id="chart-hint" class="mt-2 text-center text-xs text-neutral-400 dark:text-neutral-500">
@@ -75,7 +77,6 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     ];
   }
 
-  // Gradient shade: index 0 = most intense (highest level after sort desc)
   function shade(baseColor, index, total) {
     var rgb = hexToRgb(baseColor);
     var alpha = 0.95 - (index / Math.max(total - 1, 1)) * 0.58;
@@ -131,13 +132,57 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     else hint.textContent = 'Прокрутите или потяните для изменения периода';
   }
 
-  // ── L1: Треки ──────────────────────────────────────────────────
-  function optL1() {
+  // ── Flip animation ─────────────────────────────────────────────
+  // pivotX  — X-координата оси вращения в пикселях (точка клика)
+  // callback — вызывается в момент, когда график "ребром" (невидим)
+  var HALF = 300; // мс на каждую половину анимации
+  var flipping = false;
+
+  function flipTo(pivotX, callback) {
+    if (flipping) return;
+    flipping = true;
+
+    // Фаза 1: складываемся к оси (точка клика)
+    chartDom.style.transformOrigin = pivotX + 'px center';
+    chartDom.style.transition = 'transform ' + HALF + 'ms ease-in';
+    chartDom.style.transform  = 'rotateY(90deg)';
+
+    setTimeout(function () {
+      // Момент невидимости — обновляем данные без анимации ECharts
+      callback();
+
+      // Фаза 2: разворачиваемся из центра
+      chartDom.style.transition      = 'none';
+      chartDom.style.transformOrigin = 'center center';
+      chartDom.style.transform       = 'rotateY(-90deg)';
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          chartDom.style.transition = 'transform ' + HALF + 'ms ease-out';
+          chartDom.style.transform  = 'rotateY(0deg)';
+
+          setTimeout(function () {
+            chartDom.style.transition      = '';
+            chartDom.style.transformOrigin = '';
+            chartDom.style.transform       = '';
+            flipping = false;
+          }, HALF);
+        });
+      });
+    }, HALF);
+  }
+
+  // Простой центровой flip — для навигации назад
+  function flipCenter(callback) {
+    flipTo(chartDom.offsetWidth / 2, callback);
+  }
+
+  // ── Chart option builders ──────────────────────────────────────
+  // animated=false отключает встроенную анимацию ECharts (она скрыта под флипом)
+  function optL1(animated) {
     var tracks = DATA.tracks;
     return {
-      animation: true,
-      animationDuration: 500,
-      animationEasing: 'cubicOut',
+      animation: !!animated,
       tooltip: {
         trigger: 'item',
         formatter: function (p) {
@@ -162,7 +207,7 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
         type: 'bar',
         barMaxWidth: 72,
         cursor: 'pointer',
-        data: tracks.map(function (t, i) {
+        data: tracks.map(function (t) {
           return {
             value: t.placeholder ? 0.4 : t.level,
             itemStyle: {
@@ -186,16 +231,13 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     };
   }
 
-  // ── L2: Компоненты трека ───────────────────────────────────────
-  function optL2(trackIdx) {
+  function optL2(trackIdx, animated) {
     var track  = DATA.tracks[trackIdx];
     var sorted = track.components.slice().sort(function (a, b) { return b.level - a.level; });
     var color  = track.color;
 
     return {
-      animation: true,
-      animationDuration: 500,
-      animationEasing: 'cubicOut',
+      animation: !!animated,
       tooltip: {
         trigger: 'item',
         formatter: function (p) {
@@ -242,8 +284,7 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     };
   }
 
-  // ── L3: Прогресс во времени ────────────────────────────────────
-  function optL3(trackIdx, compId) {
+  function optL3(trackIdx, compId, animated) {
     var track = DATA.tracks[trackIdx];
     var comp  = track.components.find(function (c) { return c.id === compId; });
     var tl    = comp.timeline;
@@ -269,17 +310,15 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
       };
     });
 
-    var series = [
-      {
-        type: 'line',
-        smooth: 0.25,
-        data: lineData,
-        lineStyle: { color: color, width: 3 },
-        itemStyle: { color: color },
-        symbolSize: 8,
-        z: 1
-      }
-    ];
+    var series = [{
+      type: 'line',
+      smooth: 0.25,
+      data: lineData,
+      lineStyle: { color: color, width: 3 },
+      itemStyle: { color: color },
+      symbolSize: 8,
+      z: 1
+    }];
 
     if (annotated.length > 0) {
       series.push({
@@ -292,9 +331,7 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     }
 
     return {
-      animation: true,
-      animationDuration: 600,
-      animationEasing: 'cubicOut',
+      animation: !!animated,
       tooltip: {
         trigger: 'axis',
         formatter: function (params) {
@@ -306,10 +343,7 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
       grid: { top: 20, bottom: 76, left: 52, right: 24 },
       xAxis: {
         type: 'time',
-        axisLabel: {
-          formatter: function (val) { return msToLabel(val); },
-          fontSize: 11
-        }
+        axisLabel: { formatter: function (val) { return msToLabel(val); }, fontSize: 11 }
       },
       yAxis: {
         type: 'value', min: 0, max: 10, interval: 1,
@@ -324,49 +358,58 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     };
   }
 
-  // ── Navigation ─────────────────────────────────────────────────
+  // ── Navigation (без анимации ECharts — перекрыта CSS-флипом) ───
   function goL1() {
     state = { level: 1, trackIdx: null, compId: null };
-    chart.setOption(optL1(), true);
+    chart.setOption(optL1(false), true);
     updateNav();
   }
 
   function goL2(idx) {
     state = { level: 2, trackIdx: idx, compId: null };
-    chart.setOption(optL2(idx), true);
+    chart.setOption(optL2(idx, false), true);
     updateNav();
   }
 
   function goL3(idx, compId) {
     state = { level: 3, trackIdx: idx, compId: compId };
-    chart.setOption(optL3(idx, compId), true);
+    chart.setOption(optL3(idx, compId, false), true);
     updateNav();
   }
 
   // ── Click handlers ─────────────────────────────────────────────
-  chart.on('click', function (params) {
-    if (params.componentType !== 'series') return;
+  function attachClick() {
+    chart.on('click', function (params) {
+      if (params.componentType !== 'series') return;
 
-    if (state.level === 1) {
-      var track = DATA.tracks[params.dataIndex];
-      if (track && !track.placeholder && track.components && track.components.length > 0) {
-        goL2(params.dataIndex);
-      }
-    } else if (state.level === 2) {
-      var track2  = DATA.tracks[state.trackIdx];
-      var sorted2 = track2.components.slice().sort(function (a, b) { return b.level - a.level; });
-      var comp    = sorted2[params.dataIndex];
-      if (comp && comp.timeline && comp.timeline.length > 1) {
-        goL3(state.trackIdx, comp.id);
-      }
-    }
-  });
+      if (state.level === 1) {
+        var track = DATA.tracks[params.dataIndex];
+        if (track && !track.placeholder && track.components && track.components.length > 0) {
+          var px = params.event.offsetX;
+          flipTo(px, function () { goL2(params.dataIndex); });
+        }
 
+      } else if (state.level === 2) {
+        var track2  = DATA.tracks[state.trackIdx];
+        var sorted2 = track2.components.slice().sort(function (a, b) { return b.level - a.level; });
+        var comp    = sorted2[params.dataIndex];
+        if (comp && comp.timeline && comp.timeline.length > 1) {
+          var px2 = params.event.offsetX;
+          flipTo(px2, function () { goL3(state.trackIdx, comp.id); });
+        }
+      }
+    });
+  }
+
+  // Breadcrumb — центровой flip
   crumbHome.addEventListener('click', function () {
-    if (state.level > 1) goL1();
+    if (state.level > 1 && !flipping) flipCenter(goL1);
   });
   crumbTrack.addEventListener('click', function () {
-    if (state.level > 2) goL2(state.trackIdx);
+    if (state.level > 2 && !flipping) {
+      var idx = state.trackIdx;
+      flipCenter(function () { goL2(idx); });
+    }
   });
 
   // ── Dark mode ──────────────────────────────────────────────────
@@ -375,30 +418,18 @@ window.__COMP__ = {{ $comp | jsonify | safeJS }};
     var cur  = state;
     chart.dispose();
     chart = echarts.init(chartDom, dark ? 'dark' : null, { renderer: 'canvas' });
-    chart.on('click', arguments.callee); // reattach is handled via outer closure
-    if (cur.level === 1) chart.setOption(optL1());
-    else if (cur.level === 2) chart.setOption(optL2(cur.trackIdx));
-    else chart.setOption(optL3(cur.trackIdx, cur.compId));
-    // reattach click
-    chart.on('click', function (params) {
-      if (params.componentType !== 'series') return;
-      if (state.level === 1) {
-        var t = DATA.tracks[params.dataIndex];
-        if (t && !t.placeholder && t.components && t.components.length > 0) goL2(params.dataIndex);
-      } else if (state.level === 2) {
-        var tr = DATA.tracks[state.trackIdx];
-        var s  = tr.components.slice().sort(function (a, b) { return b.level - a.level; });
-        var c  = s[params.dataIndex];
-        if (c && c.timeline && c.timeline.length > 1) goL3(state.trackIdx, c.id);
-      }
-    });
+    attachClick();
+    if (cur.level === 1) chart.setOption(optL1(true));
+    else if (cur.level === 2) chart.setOption(optL2(cur.trackIdx, true));
+    else chart.setOption(optL3(cur.trackIdx, cur.compId, true));
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   // ── Resize ─────────────────────────────────────────────────────
   window.addEventListener('resize', function () { chart.resize(); });
 
   // ── Init ───────────────────────────────────────────────────────
-  chart.setOption(optL1());
+  attachClick();
+  chart.setOption(optL1(true));
   updateNav();
 
 })();
