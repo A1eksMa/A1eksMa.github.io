@@ -1,2 +1,2 @@
-[security.funcs]
+[funcs]
   getenv = ["^HUGO_", "^CI$", "GITHUB_TOKEN"]
