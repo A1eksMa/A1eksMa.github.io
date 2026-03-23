@@ -272,6 +272,13 @@ showAuthor: false
 </div>
 </div>
 
+<div class="full-only about-section-content">
+<div class="about-item">
+<strong>Управление затратами на предприятиях нефтегазового комплекса</strong>
+<span>Российский государственный университет нефти и газа имени И.М. Губкина · 2017 · 40 ч.</span>
+</div>
+</div>
+
 ## В сети
 
 <div class="about-online">
