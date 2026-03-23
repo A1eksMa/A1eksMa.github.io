@@ -3,7 +3,7 @@ name: Deploy Hugo Site
 on:
   push:
     branches: [main]
-    paths: ['content/**']
+    paths: ['content/**', 'data/**']
   workflow_dispatch:
 
 permissions:
