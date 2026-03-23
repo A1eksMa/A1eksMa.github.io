@@ -1,0 +1,66 @@
+{{- $owner := .Get "owner" | default "A1eksMa" -}}
+{{- $repo  := .Get "repo" -}}
+{{- $token := os.Getenv "GITHUB_TOKEN" -}}
+
+{{- $headers := dict "Accept" "application/vnd.github+json" -}}
+{{- if $token -}}
+  {{- $headers = merge $headers (dict "Authorization" (printf "Bearer %s" $token)) -}}
+{{- end -}}
+{{- $opts := dict "headers" $headers -}}
+
+{{- $apiURL  := printf "https://api.github.com/repos/%s/%s" $owner $repo -}}
+{{- $langURL := printf "https://api.github.com/repos/%s/%s/languages" $owner $repo -}}
+
+{{- with resources.GetRemote $apiURL $opts -}}
+  {{- with . | transform.Unmarshal -}}
+    {{- $r := . -}}
+    {{- $langs := dict -}}
+    {{- with resources.GetRemote $langURL $opts -}}
+      {{- $langs = . | transform.Unmarshal -}}
+    {{- end -}}
+
+    {{- $total := 0 -}}
+    {{- range $bytes := $langs -}}{{- $total = add $total $bytes -}}{{- end -}}
+
+<div class="repo-card">
+  <div class="repo-card__header">
+    <a class="repo-card__name" href="{{ $r.html_url }}" target="_blank" rel="noopener">
+      {{- partial "icon.html" "github" -}}&nbsp;{{ $r.full_name }}
+    </a>
+    {{- with $r.stargazers_count -}}
+    <span class="repo-card__stars">★ {{ . }}</span>
+    {{- end -}}
+  </div>
+
+  {{- with $r.description -}}
+  <p class="repo-card__desc">{{ . }}</p>
+  {{- end -}}
+
+  {{- if $langs -}}
+  <div class="repo-card__langs">
+    {{- range $lang, $bytes := $langs -}}
+      {{- $pct := printf "%.0f" (mul (div (float $bytes) (float $total)) 100) -}}
+      <span class="repo-card__lang-tag">{{ $lang }} {{ $pct }}%</span>
+    {{- end -}}
+  </div>
+  {{- end -}}
+
+  {{- with $r.topics -}}
+  <div class="repo-card__topics">
+    {{- range . -}}<span class="repo-card__topic">{{ . }}</span>{{- end -}}
+  </div>
+  {{- end -}}
+
+  <div class="repo-card__meta">
+    {{- with $r.pushed_at -}}
+      <span>Последний коммит: {{ dateFormat "02.01.2006" . }}</span>
+    {{- end -}}
+    {{- with $r.license -}}{{- with .spdx_id -}}
+      <span>{{ . }}</span>
+    {{- end -}}{{- end -}}
+  </div>
+</div>
+  {{- end -}}
+{{- else -}}
+<p><em>Не удалось загрузить данные репозитория {{ $owner }}/{{ $repo }}.</em></p>
+{{- end -}}
