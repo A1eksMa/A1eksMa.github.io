@@ -261,21 +261,24 @@ showAuthor: false
 
 <h3>Дополнительное образование</h3>
 
-<div class="about-section-content">
+<div class="full-only about-section-content">
 <div class="about-item">
-<strong>Управление данными (data-driven), бизнес-анализ</strong>
-<span>ФГБОУВО «Уфимский государственный нефтяной технический университет» · 2025 · 80 ч.</span>
+<strong>Управление затратами на предприятиях нефтегазового комплекса</strong>
+<span>Российский государственный университет нефти и газа имени И.М. Губкина · 2017 · 40 ч.</span>
 </div>
+</div>
+
+<div class="about-section-content">
 <div class="about-item">
 <strong>Аналитик данных</strong>
 <span>АНО ДПО «Образовательные технологии Яндекса» · 2022–2023 · 350 ч.</span>
 </div>
 </div>
 
-<div class="full-only about-section-content">
+<div class="about-section-content">
 <div class="about-item">
-<strong>Управление затратами на предприятиях нефтегазового комплекса</strong>
-<span>Российский государственный университет нефти и газа имени И.М. Губкина · 2017 · 40 ч.</span>
+<strong>Управление данными (data-driven), бизнес-анализ</strong>
+<span>ФГБОУВО «Уфимский государственный нефтяной технический университет» · 2025 · 80 ч.</span>
 </div>
 </div>
 
