@@ -32,7 +32,52 @@
             { "period": "2025Q3", "level": 7, "annotation": "" },
             { "period": "2026Q1", "level": 8, "annotation": "" }
           ],
-          "tools": []
+          "tools": [
+            {
+              "period": "2018Q2",
+              "snapshot": [
+                { "name": "Django", "level": 1 }
+              ]
+            },
+            {
+              "period": "2023Q2",
+              "snapshot": [
+                { "name": "Flask",  "level": 1 },
+                { "name": "Django", "level": 1 }
+              ]
+            },
+            {
+              "period": "2024Q1",
+              "snapshot": [
+                { "name": "Flask",  "level": 2 },
+                { "name": "Django", "level": 1 }
+              ]
+            },
+            {
+              "period": "2024Q2",
+              "snapshot": [
+                { "name": "Flask",   "level": 4 },
+                { "name": "FastAPI", "level": 1 },
+                { "name": "Django",  "level": 2 }
+              ]
+            },
+            {
+              "period": "2025Q2",
+              "snapshot": [
+                { "name": "Flask",   "level": 4 },
+                { "name": "FastAPI", "level": 4 },
+                { "name": "Django",  "level": 4 }
+              ]
+            },
+            {
+              "period": "2025Q4",
+              "snapshot": [
+                { "name": "Flask",   "level": 4 },
+                { "name": "FastAPI", "level": 6 },
+                { "name": "Django",  "level": 4 }
+              ]
+            }
+          ]
         },
         {
           "id": "java", "name": "Java", "level": 4, "status": "active",
