@@ -7,7 +7,7 @@
     {{ .Title }}
   </h1>
 
-  <!-- Breadcrumb -->
+  <!-- Breadcrumb (4 levels) -->
   <nav class="mb-3 flex items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400 select-none">
     <button id="crumb-home"
       class="font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
@@ -17,7 +17,10 @@
     <button id="crumb-track"
       class="hidden font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors"></button>
     <span id="crumb-sep2" class="hidden">/</span>
-    <span id="crumb-comp" class="hidden font-medium text-neutral-700 dark:text-neutral-300"></span>
+    <button id="crumb-comp"
+      class="hidden font-medium hover:text-primary-600 dark:hover:text-primary-400 transition-colors"></button>
+    <span id="crumb-sep3" class="hidden">/</span>
+    <span id="crumb-period" class="hidden font-medium text-neutral-700 dark:text-neutral-300"></span>
   </nav>
 
   <!-- Perspective wrapper — required for 3D flip -->
@@ -68,6 +71,10 @@
     var alpha = 0.95 - (i / Math.max(total-1,1)) * 0.58;
     return 'rgba('+rgb.join(',')+','+alpha.toFixed(2)+')';
   }
+  function rgba(hex, a) {
+    var rgb = hexToRgb(hex);
+    return 'rgba('+rgb.join(',')+','+a.toFixed(2)+')';
+  }
 
   // ── Period ─────────────────────────────────────────────────────
   function pToMs(p) {
@@ -78,37 +85,59 @@
     return 'Q'+(Math.floor(d.getMonth()/3)+1)+' '+d.getFullYear();
   }
 
+  // ── Tools lookup ───────────────────────────────────────────────
+  // Возвращает срез инструментов, актуальный для periodMs (ближайший не позже)
+  function getToolsAtPeriod(trackIdx, compId, periodMs) {
+    var comp = DATA.tracks[trackIdx].components.find(function(c) { return c.id === compId; });
+    if (!comp || !comp.tools || !comp.tools.length) return [];
+    var best = null;
+    comp.tools.forEach(function(snap) {
+      var sMs = pToMs(snap.period);
+      if (sMs <= periodMs && (!best || sMs > pToMs(best.period))) best = snap;
+    });
+    return best ? best.snapshot : [];
+  }
+
   // ── ECharts ────────────────────────────────────────────────────
   var isDark   = document.documentElement.classList.contains('dark');
   var chartDom = document.getElementById('competency-chart');
   var chart    = echarts.init(chartDom, isDark ? 'dark' : null, { renderer: 'canvas' });
 
   // ── State ──────────────────────────────────────────────────────
-  var state     = { level: 1, trackIdx: null, compId: null };
-  var pendingL3 = null;  // ожидает анимации "снизу вверх"
+  var state     = { level: 1, trackIdx: null, compId: null, period: null, periodLabel: null };
+  var pendingL3 = null;
 
   // ── DOM ────────────────────────────────────────────────────────
-  var crumbHome  = document.getElementById('crumb-home');
-  var crumbSep1  = document.getElementById('crumb-sep1');
-  var crumbTrack = document.getElementById('crumb-track');
-  var crumbSep2  = document.getElementById('crumb-sep2');
-  var crumbComp  = document.getElementById('crumb-comp');
-  var hint       = document.getElementById('chart-hint');
+  var crumbHome   = document.getElementById('crumb-home');
+  var crumbSep1   = document.getElementById('crumb-sep1');
+  var crumbTrack  = document.getElementById('crumb-track');
+  var crumbSep2   = document.getElementById('crumb-sep2');
+  var crumbComp   = document.getElementById('crumb-comp');
+  var crumbSep3   = document.getElementById('crumb-sep3');
+  var crumbPeriod = document.getElementById('crumb-period');
+  var hint        = document.getElementById('chart-hint');
 
   function updateNav() {
-    var at2 = state.level >= 2, at3 = state.level >= 3;
+    var at2 = state.level >= 2, at3 = state.level >= 3, at4 = state.level >= 4;
     crumbSep1.classList.toggle('hidden', !at2);
     crumbTrack.classList.toggle('hidden', !at2);
     crumbSep2.classList.toggle('hidden', !at3);
     crumbComp.classList.toggle('hidden',  !at3);
+    crumbSep3.classList.toggle('hidden',  !at4);
+    crumbPeriod.classList.toggle('hidden', !at4);
     if (at2) crumbTrack.textContent = DATA.tracks[state.trackIdx].name;
     if (at3) {
-      var c = DATA.tracks[state.trackIdx].components.find(function(c){ return c.id===state.compId; });
+      var c = DATA.tracks[state.trackIdx].components.find(function(c) { return c.id === state.compId; });
       crumbComp.textContent = c ? c.name : '';
     }
-    hint.textContent = state.level===1 ? 'Нажмите на трек, чтобы увидеть детали'
-                     : state.level===2 ? 'Нажмите на компонент, чтобы увидеть прогресс'
-                     : 'Прокрутите для изменения периода';
+    if (at4) crumbPeriod.textContent = state.periodLabel || '';
+    var hints = [
+      'Нажмите на трек, чтобы увидеть детали',
+      'Нажмите на компонент, чтобы увидеть прогресс',
+      'Нажмите на столбик, чтобы увидеть инструменты периода',
+      'Инструменты на период ' + (state.periodLabel || '')
+    ];
+    hint.textContent = hints[state.level - 1];
   }
 
   // ── Flip helpers ───────────────────────────────────────────────
@@ -150,7 +179,7 @@
   // L2↔L3: вращение вокруг горизонтальной оси (rotateX)
   function flipY(pivotY, cb, after) { doFlip('X', pivotY, cb, after); }
 
-  // ── L1: вертикальный барплот ───────────────────────────────────
+  // ── L1: вертикальный барплот по трекам ────────────────────────
   function optL1(anim) {
     var tracks = DATA.tracks;
     return {
@@ -190,8 +219,7 @@
     };
   }
 
-  // ── L2: горизонтальный барплот (полоски сверху↓, вылетают слева→) ──
-  // animDelay: задержка ECharts-анимации в мс (синхронизируется с флипом)
+  // ── L2: горизонтальный барплот по компонентам ─────────────────
   function optL2(trackIdx, animDelay) {
     var track  = DATA.tracks[trackIdx];
     var sorted = track.components.slice().sort(function(a,b){ return b.level-a.level; });
@@ -216,7 +244,7 @@
       yAxis: {
         type: 'category',
         data: sorted.map(function(c){ return c.name; }),
-        inverse: true,   // самые высокие — сверху
+        inverse: true,
         axisLabel: { fontSize: 12 }
       },
       series: [{
@@ -239,17 +267,22 @@
     };
   }
 
-  // ── L3: точечно-линейный график ────────────────────────────────
-  // zeroed=true — все y=0 (невидимая фаза флипа)
-  function buildL3Series(trackIdx, compId, zeroed) {
-    var track = DATA.tracks[trackIdx];
-    var comp  = track.components.find(function(c){ return c.id===compId; });
-    var tl    = comp.timeline, color = track.color;
+  // ── L3: столбики + линия поверху (прогресс по времени) ────────
+  function optL3(trackIdx, compId, zeroed) {
+    var track    = DATA.tracks[trackIdx];
+    var comp     = track.components.find(function(c) { return c.id === compId; });
+    var tl       = comp.timeline;
+    var color    = track.color;
+    var hasTools = comp.tools && comp.tools.length > 0;
 
-    var lineData  = tl.map(function(p){ return [pToMs(p.period), zeroed ? 0 : p.level]; });
-    var annotated = zeroed ? [] : tl.filter(function(p){ return p.annotation; }).map(function(p){
+    var tlData = tl.map(function(p) { return [pToMs(p.period), zeroed ? 0 : p.level]; });
+
+    // Линия — те же данные, плюс подписи на аннотированных точках
+    var lineData = zeroed ? tlData : tl.map(function(p) {
+      var base = [pToMs(p.period), p.level];
+      if (!p.annotation) return base;
       return {
-        value: [pToMs(p.period), p.level],
+        value: base,
         label: {
           show: true, position: 'top', formatter: p.annotation, fontSize: 11,
           backgroundColor: 'rgba(255,255,255,0.9)',
@@ -258,91 +291,170 @@
       };
     });
 
-    var series = [{
-      type: 'line', smooth: 0.25, animation: false,
-      data: lineData, lineStyle: { color: color, width: 3 },
-      itemStyle: { color: color }, symbolSize: 8, z: 1
-    }];
-    if (annotated.length > 0) {
-      series.push({ type: 'scatter', data: annotated, symbolSize: 13,
-                    itemStyle: { color: color }, animation: false, z: 2 });
-    }
-    return series;
-  }
-
-  function optL3(trackIdx, compId, zeroed) {
     return {
       animation: false,
       tooltip: {
         trigger: 'axis',
-        formatter: function(params){
-          var v = params[0].value;
-          return msLabel(v[0])+'<br/>Уровень: '+v[1]+(LEVEL[v[1]]?' — '+LEVEL[v[1]]:'');
+        formatter: function(params) {
+          var v   = params[0].value;
+          var ms  = Array.isArray(v) ? v[0] : 0;
+          var lv  = Array.isArray(v) ? v[1] : 0;
+          var tip = msLabel(ms) + '<br/>Уровень: ' + lv + (LEVEL[lv] ? ' — ' + LEVEL[lv] : '');
+          if (hasTools) tip += '<br/><small style="color:#aaa">Нажмите на столбик для инструментов</small>';
+          return tip;
         }
       },
-      grid: { top: 20, bottom: 76, left: 52, right: 24 },
-      xAxis: { type: 'time', axisLabel: { formatter: function(v){ return msLabel(v); }, fontSize: 11 } },
-      yAxis: { type: 'value', min: 0, max: 10, interval: 1, name: 'Уровень', nameLocation: 'end',
-               axisLabel: { formatter: function(v){ return v>0?v:''; } } },
+      grid: { top: 24, bottom: 76, left: 52, right: 24 },
+      xAxis: { type: 'time', axisLabel: { formatter: function(v) { return msLabel(v); }, fontSize: 11 } },
+      yAxis: {
+        type: 'value', min: 0, max: 10, interval: 1, name: 'Уровень', nameLocation: 'end',
+        axisLabel: { formatter: function(v) { return v > 0 ? v : ''; } }
+      },
       dataZoom: [
         { type: 'inside', xAxisIndex: 0 },
         { type: 'slider',  xAxisIndex: 0, bottom: 8, height: 22 }
       ],
-      series: buildL3Series(trackIdx, compId, zeroed)
+      series: [
+        {
+          name: 'bars',
+          type: 'bar',
+          barMaxWidth: 36,
+          data: tlData,
+          itemStyle: { color: rgba(color, 0.52), borderRadius: [3,3,0,0] },
+          cursor: hasTools ? 'pointer' : 'default',
+          z: 1
+        },
+        {
+          name: 'line',
+          type: 'line',
+          smooth: 0.25,
+          data: lineData,
+          lineStyle: { color: color, width: 3 },
+          itemStyle: { color: color },
+          symbolSize: 8,
+          z: 3
+        }
+      ]
     };
   }
 
-  // После флипа — запускаем анимацию точек снизу вверх
+  // После флипа L2→L3 — анимируем столбики и линию снизу вверх
   function growL3() {
     if (!pendingL3) return;
     var p = pendingL3; pendingL3 = null;
     var track = DATA.tracks[p.trackIdx];
-    var comp  = track.components.find(function(c){ return c.id===p.compId; });
-    var tl    = comp.timeline, color = track.color;
+    var comp  = track.components.find(function(c) { return c.id === p.compId; });
+    var tl    = comp.timeline;
+    var color = track.color;
 
-    var realData  = tl.map(function(p){ return [pToMs(p.period), p.level]; });
-    var annotated = tl.filter(function(p){ return p.annotation; }).map(function(p){
+    var realData = tl.map(function(pt) { return [pToMs(pt.period), pt.level]; });
+    var lineData = tl.map(function(pt) {
+      var base = [pToMs(pt.period), pt.level];
+      if (!pt.annotation) return base;
       return {
-        value: [pToMs(p.period), p.level],
+        value: base,
         label: {
-          show: true, position: 'top', formatter: p.annotation, fontSize: 11,
+          show: true, position: 'top', formatter: pt.annotation, fontSize: 11,
           backgroundColor: 'rgba(255,255,255,0.9)',
           borderColor: color, borderWidth: 1, borderRadius: 4, padding: [3,7], color: '#333'
         }
       };
     });
 
-    var series = [{
-      type: 'line', smooth: 0.25,
-      animation: true, animationDuration: 700, animationEasing: 'cubicOut',
-      data: realData, lineStyle: { color: color, width: 3 },
-      itemStyle: { color: color }, symbolSize: 8, z: 1
-    }];
-    if (annotated.length > 0) {
-      series.push({ type: 'scatter', data: annotated, symbolSize: 13,
-                    itemStyle: { color: color }, animation: true, animationDuration: 700, z: 2 });
+    chart.setOption({
+      series: [
+        { name: 'bars', animation: true, animationDuration: 700, animationEasing: 'cubicOut', data: realData },
+        { name: 'line', animation: true, animationDuration: 700, animationEasing: 'cubicOut', data: lineData }
+      ]
+    });
+  }
+
+  // ── L4: пузырьковая диаграмма инструментов ────────────────────
+  function optL4(trackIdx, compId, periodMs) {
+    var tools = getToolsAtPeriod(trackIdx, compId, periodMs);
+    var color = DATA.tracks[trackIdx].color;
+
+    if (!tools.length) {
+      return {
+        graphic: [{ type: 'text', left: 'center', top: 'middle',
+                    style: { text: 'Нет данных для этого периода', fontSize: 16, fill: '#999' } }],
+        tooltip: { show: false },
+        xAxis: { show: false }, yAxis: { show: false },
+        series: []
+      };
     }
-    chart.setOption({ series: series }); // partial update — только данные
+
+    // Сортируем по убыванию уровня — крупные пузыри в начале
+    var sorted = tools.slice().sort(function(a,b) { return b.level - a.level; });
+    var cols   = Math.max(2, Math.ceil(Math.sqrt(sorted.length)));
+    var rows   = Math.ceil(sorted.length / cols);
+
+    var scatterData = sorted.map(function(t, i) {
+      return {
+        name: t.name,
+        // [x, y, level] — level используется для symbolSize
+        value: [i % cols + 0.5, rows - Math.floor(i / cols) - 0.5, t.level]
+      };
+    });
+
+    return {
+      animation: true, animationDuration: 600, animationEasing: 'elasticOut',
+      tooltip: {
+        trigger: 'item',
+        formatter: function(p) {
+          var t = sorted[p.dataIndex];
+          return '<b>'+t.name+'</b><br/>Уровень: '+t.level+(LEVEL[t.level]?' — '+LEVEL[t.level]:'');
+        }
+      },
+      grid: { top: 16, bottom: 16, left: 16, right: 16 },
+      xAxis: { type: 'value', show: false, min: 0, max: cols },
+      yAxis: { type: 'value', show: false, min: 0, max: rows },
+      series: [{
+        type: 'scatter',
+        symbolSize: function(val) { return Math.max(val[2] * 18, 36); },
+        data: scatterData,
+        itemStyle: {
+          color: function(p) { return rgba(color, 0.45 + sorted[p.dataIndex].level * 0.055); }
+        },
+        label: {
+          show: true,
+          formatter: function(p) { return sorted[p.dataIndex].name + '\n' + sorted[p.dataIndex].level; },
+          color: '#fff',
+          fontWeight: 'bold',
+          fontSize: 11,
+          lineHeight: 16
+        }
+      }]
+    };
   }
 
   // ── Navigation ─────────────────────────────────────────────────
   function goL1() {
     pendingL3 = null;
-    state = { level: 1, trackIdx: null, compId: null };
+    state = { level: 1, trackIdx: null, compId: null, period: null, periodLabel: null };
     chart.setOption(optL1(false), true);
     updateNav();
   }
   function goL2(idx) {
     pendingL3 = null;
-    state = { level: 2, trackIdx: idx, compId: null };
-    // animDelay=HALF: полоски начинают вылетать когда флип заканчивается
+    state = { level: 2, trackIdx: idx, compId: null, period: null, periodLabel: null };
     chart.setOption(optL2(idx, HALF), true);
     updateNav();
   }
   function goL3(idx, compId) {
-    state = { level: 3, trackIdx: idx, compId: compId };
+    state = { level: 3, trackIdx: idx, compId: compId, period: null, periodLabel: null };
     pendingL3 = { trackIdx: idx, compId: compId };
-    chart.setOption(optL3(idx, compId, true), true); // zeroed
+    chart.setOption(optL3(idx, compId, true), true);
+    updateNav();
+  }
+  function goL4(tlIdx) {
+    var comp      = DATA.tracks[state.trackIdx].components.find(function(c) { return c.id === state.compId; });
+    var periodStr = comp.timeline[tlIdx].period;
+    var periodMs  = pToMs(periodStr);
+    state.level       = 4;
+    state.period      = periodStr;
+    state.periodLabel = msLabel(periodMs);
+    chart.setOption(optL4(state.trackIdx, state.compId, periodMs), true);
     updateNav();
   }
 
@@ -361,10 +473,25 @@
       } else if (state.level === 2) {
         var track2  = DATA.tracks[state.trackIdx];
         var sorted2 = track2.components.slice().sort(function(a,b){ return b.level-a.level; });
-        var comp    = sorted2[params.dataIndex];
-        if (comp && comp.timeline && comp.timeline.length > 1) {
+        var comp2   = sorted2[params.dataIndex];
+        if (comp2 && comp2.timeline && comp2.timeline.length > 1) {
           var py = params.event.offsetY;
-          flipY(py, function(){ goL3(state.trackIdx, comp.id); }, growL3);
+          flipY(py, function(){ goL3(state.trackIdx, comp2.id); }, growL3);
+        }
+
+      } else if (state.level === 3) {
+        // Клик по столбику → L4
+        if (params.seriesName === 'bars') {
+          var tlIdx   = params.dataIndex;
+          var comp3   = DATA.tracks[state.trackIdx].components.find(function(c) { return c.id === state.compId; });
+          if (comp3 && comp3.timeline[tlIdx]) {
+            var periodMs3 = pToMs(comp3.timeline[tlIdx].period);
+            var tools     = getToolsAtPeriod(state.trackIdx, state.compId, periodMs3);
+            if (tools.length > 0) {
+              var capturedIdx = tlIdx;
+              flipX(params.event.offsetX, function() { goL4(capturedIdx); });
+            }
+          }
         }
       }
     });
@@ -372,13 +499,32 @@
 
   // ── Breadcrumb back ────────────────────────────────────────────
   crumbHome.addEventListener('click', function () {
-    if (!flipping) flipX(chartDom.offsetWidth/2, goL1);
+    if (flipping || state.level === 1) return;
+    flipX(chartDom.offsetWidth / 2, goL1);
   });
+
   crumbTrack.addEventListener('click', function () {
-    if (state.level===3 && !flipping) {
-      var idx = state.trackIdx;
-      flipY(chartDom.offsetHeight/2, function(){ goL2(idx); });
+    if (flipping || state.level <= 2) return;
+    var idx = state.trackIdx;
+    if (state.level === 3) {
+      flipY(chartDom.offsetHeight / 2, function() { goL2(idx); });
+    } else if (state.level === 4) {
+      flipX(chartDom.offsetWidth / 2, function() { goL2(idx); });
     }
+  });
+
+  crumbComp.addEventListener('click', function () {
+    if (flipping || state.level !== 4) return;
+    var idx = state.trackIdx;
+    var cId = state.compId;
+    // L4 → L3
+    flipX(chartDom.offsetWidth / 2, function() {
+      state.period = null; state.periodLabel = null;
+      pendingL3 = { trackIdx: idx, compId: cId };
+      state.level = 3;
+      chart.setOption(optL3(idx, cId, true), true);
+      updateNav();
+    }, growL3);
   });
 
   // ── Dark mode ──────────────────────────────────────────────────
@@ -388,9 +534,10 @@
     chart.dispose();
     chart = echarts.init(chartDom, dark ? 'dark' : null, { renderer: 'canvas' });
     attachClick();
-    if (cur.level===1)      chart.setOption(optL1(true));
-    else if (cur.level===2) chart.setOption(optL2(cur.trackIdx, null));
-    else                    chart.setOption(optL3(cur.trackIdx, cur.compId, false));
+    if      (cur.level === 1) chart.setOption(optL1(true));
+    else if (cur.level === 2) chart.setOption(optL2(cur.trackIdx, null));
+    else if (cur.level === 3) chart.setOption(optL3(cur.trackIdx, cur.compId, false));
+    else                      chart.setOption(optL4(cur.trackIdx, cur.compId, pToMs(cur.period)));
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
   // ── Resize ─────────────────────────────────────────────────────
