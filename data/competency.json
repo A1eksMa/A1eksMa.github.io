@@ -1,15 +1,15 @@
 {
   "scale": [
-    { "level": 1,  "name": "Осведомлённость",      "desc": "Слышал, знаю нишу и область применения" },
-    { "level": 2,  "name": "Знакомство",             "desc": "Прошёл курс / прочитал книгу / видеокурс" },
-    { "level": 3,  "name": "Базовая практика",       "desc": "Сниппеты, учебные задания" },
-    { "level": 4,  "name": "Углублённая практика",   "desc": "Сложные задачи, алгоритмы, структуры данных" },
-    { "level": 5,  "name": "Первый проект",          "desc": "Небольшое приложение / пет-проект" },
-    { "level": 6,  "name": "Экосистема",             "desc": "Основные фреймворки, библиотеки и тулинг" },
-    { "level": 7,  "name": "Уверенное владение",     "desc": "Синтаксис и стандартная библиотека без доки" },
-    { "level": 8,  "name": "Расширенная практика",   "desc": "Нестандартные библиотеки, реальные задачи" },
-    { "level": 9,  "name": "Идиомы и подводные камни", "desc": "Идиоматический код, типичные ловушки" },
-    { "level": 10, "name": "Под капотом",            "desc": "Runtime / компилятор / memory model" }
+    { "level": 1,  "name": "Осведомлённость",        "desc": "Слышал, знаю нишу и область применения" },
+    { "level": 2,  "name": "Знакомство",              "desc": "Прошёл курс / прочитал книгу / видеокурс" },
+    { "level": 3,  "name": "Базовая практика",        "desc": "Сниппеты, учебные задания" },
+    { "level": 4,  "name": "Углублённая практика",    "desc": "Сложные задачи, алгоритмы, структуры данных" },
+    { "level": 5,  "name": "Первый проект",           "desc": "Небольшое приложение / пет-проект" },
+    { "level": 6,  "name": "Экосистема",              "desc": "Основные фреймворки, библиотеки и тулинг" },
+    { "level": 7,  "name": "Уверенное владение",      "desc": "Синтаксис и стандартная библиотека без доки" },
+    { "level": 8,  "name": "Расширенная практика",    "desc": "Нестандартные библиотеки, реальные задачи" },
+    { "level": 9,  "name": "Идиомы и подводные камни","desc": "Идиоматический код, типичные ловушки" },
+    { "level": 10, "name": "Под капотом",             "desc": "Runtime / компилятор / memory model" }
   ],
   "tracks": [
     {
@@ -21,6 +21,7 @@
         {
           "id": "python", "name": "Python", "level": 8, "status": "active",
           "timeline": [
+            { "period": "2018Q3", "level": 0, "annotation": "" },
             { "period": "2022Q4", "level": 2, "annotation": "Курс Яндекс, базовый питон" },
             { "period": "2023Q1", "level": 3, "annotation": "" },
             { "period": "2023Q2", "level": 3, "annotation": "" },
@@ -30,65 +31,85 @@
             { "period": "2024Q2", "level": 6, "annotation": "" },
             { "period": "2025Q3", "level": 7, "annotation": "" },
             { "period": "2026Q1", "level": 8, "annotation": "" }
-          ]
+          ],
+          "tools": []
         },
         {
           "id": "java", "name": "Java", "level": 4, "status": "active",
           "timeline": [
-            { "period": "2001Q1", "level": 2, "annotation": "" },
+            { "period": "2018Q3", "level": 2, "annotation": "" },
             { "period": "2024Q4", "level": 3, "annotation": "" },
-            { "period": "2025Q1", "level": 4, "annotation": "" }
-          ]
+            { "period": "2025Q1", "level": 4, "annotation": "" },
+            { "period": "2026Q1", "level": 4, "annotation": "" }
+          ],
+          "tools": []
         },
         {
           "id": "rust", "name": "Rust", "level": 3, "status": "active",
           "timeline": [
+            { "period": "2018Q3", "level": 0, "annotation": "" },
             { "period": "2024Q3", "level": 1, "annotation": "" },
             { "period": "2024Q4", "level": 2, "annotation": "" },
-            { "period": "2025Q1", "level": 3, "annotation": "" }
-          ]
+            { "period": "2025Q1", "level": 3, "annotation": "" },
+            { "period": "2026Q1", "level": 3, "annotation": "" }
+          ],
+          "tools": []
         },
         {
           "id": "php", "name": "PHP", "level": 3, "status": "active",
           "timeline": [
-            { "period": "2001Q1", "level": 1, "annotation": "" },
+            { "period": "2018Q3", "level": 1, "annotation": "" },
             { "period": "2022Q3", "level": 2, "annotation": "" },
-            { "period": "2024Q3", "level": 3, "annotation": "" }
-          ]
+            { "period": "2024Q3", "level": 3, "annotation": "" },
+            { "period": "2026Q1", "level": 3, "annotation": "" }
+          ],
+          "tools": []
         },
         {
           "id": "foxpro", "name": "FoxPro", "level": 3, "status": "archive",
           "timeline": [
-            { "period": "2003Q3", "level": 1, "annotation": "" },
-            { "period": "2004Q2", "level": 3, "annotation": "" }
-          ]
+            { "period": "2018Q3", "level": 3, "annotation": "" },
+            { "period": "2026Q1", "level": 3, "annotation": "" }
+          ],
+          "tools": []
         },
         {
           "id": "kotlin", "name": "Kotlin", "level": 2, "status": "active",
           "timeline": [
+            { "period": "2018Q3", "level": 0, "annotation": "" },
             { "period": "2024Q4", "level": 1, "annotation": "" },
-            { "period": "2025Q1", "level": 2, "annotation": "" }
-          ]
+            { "period": "2025Q1", "level": 2, "annotation": "" },
+            { "period": "2026Q1", "level": 2, "annotation": "" }
+          ],
+          "tools": []
         },
         {
           "id": "go", "name": "Go", "level": 2, "status": "active",
           "timeline": [
+            { "period": "2018Q3", "level": 0, "annotation": "" },
             { "period": "2024Q3", "level": 1, "annotation": "" },
-            { "period": "2024Q4", "level": 2, "annotation": "" }
-          ]
+            { "period": "2024Q4", "level": 2, "annotation": "" },
+            { "period": "2026Q1", "level": 2, "annotation": "" }
+          ],
+          "tools": []
         },
         {
           "id": "javascript", "name": "JavaScript", "level": 2, "status": "active",
           "timeline": [
-            { "period": "2001Q1", "level": 1, "annotation": "" },
-            { "period": "2025Q2", "level": 2, "annotation": "" }
-          ]
+            { "period": "2018Q3", "level": 1, "annotation": "" },
+            { "period": "2025Q2", "level": 2, "annotation": "" },
+            { "period": "2026Q1", "level": 2, "annotation": "" }
+          ],
+          "tools": []
         },
         {
           "id": "cpp", "name": "C++", "level": 2, "status": "active",
           "timeline": [
-            { "period": "2025Q1", "level": 2, "annotation": "" }
-          ]
+            { "period": "2018Q3", "level": 0, "annotation": "" },
+            { "period": "2025Q1", "level": 2, "annotation": "" },
+            { "period": "2026Q1", "level": 2, "annotation": "" }
+          ],
+          "tools": []
         }
       ]
     },
